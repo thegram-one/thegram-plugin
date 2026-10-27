@@ -2,13 +2,20 @@
 
 This reference describes the inspected cloud contract, not an installation or permission grant. The current connection's schemas, `gram_capabilities` and `gram_profile` win when versions differ. Every client sees the same 17 tools: reads `gram_projects`, `gram_brief`, `gram_list`, `gram_read`, `gram_recall`, `gram_context`, `gram_relations`, `gram_changes`, `gram_comments`, `gram_profile`, `gram_capabilities`; writes `gram_create`, `gram_patch`, `gram_comment`, `gram_move`, `gram_delete`, `gram_restore`.
 
+Contents: Connection and storage · Coding-agent repository binding · Selective reads · Structured writes · Saved presentation requirements · Recovery and completion · Supported representations
+
 ## Connection and storage
 
-Every host uses Streamable HTTP at `https://vault.thegram.one/mcp`: ChatGPT, Claude and Grok authenticate with OAuth, while coding agents authenticate with scoped API keys. All use the same `gram_*` tools and this shared workflow. `gram_projects` returns `mounts` with `{key,id,kind,name,count,access}`; use `key` as the path prefix. A cloud vault filename before `.gram` must start with a letter/digit and contain at most 96 letters/digits/`_`/`-`. Vaults and Drive support folders; a write to a nested path creates missing folders. `gram_move` changes the user's storage only when requested; after a move, the old path returns `E_NOT_FOUND`. Never substitute display names for keys or switch mounts after denial/conflict.
+Every host uses Streamable HTTP at `https://vault.thegram.one/mcp`: ChatGPT, Claude and Grok authenticate with OAuth, while coding agents authenticate with scoped API keys. All use the same `gram_*` tools and this shared workflow. `gram_projects` returns `mounts` with `{key,id,kind,name,count,access}`; use `key` as the path prefix. A cloud vault filename before `.gram` must start with a letter/digit and contain at most 96 letters/digits/`_`/`-`. Vaults support folders; a write to a nested path creates missing folders. Google Drive is a connector to read from, not a storage destination. `gram_move` changes the user's storage only when requested; after a move, the old path returns `E_NOT_FOUND`. Never substitute display names for keys or switch mounts after denial/conflict.
 
-The server may create a default vault when an account has no writable vault during discovery; discovery does not authorize the agent to create memory records or capture other sources. `CONSENT_REQUIRED` and `PROVIDER_AUTH_REQUIRED` require the user's sign-up/reconnection flow. Preserve the requested storage destination.
+The server creates the person's own vault `Thegram` the first time an assistant connects, giving that assistant write access, and when an account has no writable vault during discovery; neither authorizes the agent to create memory records or capture other sources. `CONSENT_REQUIRED` and `PROVIDER_AUTH_REQUIRED` require the user's sign-up/reconnection flow. Preserve the requested storage destination.
 
 `thegram-one/thegram:skills/thegram` is the one workflow and reference source for every host; the ChatGPT package and the coding-agent plugin ship this same folder. Local Node adapters may inject a repository brief and reminders, but do not define a second record/write policy. The API key's grants and lifetime apply in addition to membership and account policy. No desktop app or DMG is needed; local-only files are not exposed or silently migrated. A successful write requires `sync.state:synced` and fresh readback, regardless of authentication.
+
+## Coding-agent repository binding
+
+- For coding repositories, the adapter resolves the document afresh by the exact `repo:<host>/<repository-path>` tag on an existing project record, searching currently authorized Vault documents and all result pages. Exactly one project record must match, including within a shared document; missing or duplicate matches stop rather than guessing, creating a substitute or issuing a write reminder. Git worktrees sharing an origin resolve to the same repository identity.
+- To associate an existing project, use the host adapter's explicit bind command to add that exact repo tag server-side. Local `projects.json` mappings and fallback document paths are not project bindings. A repository without an origin needs an explicitly supplied exact repository identity; a non-Git directory has no inferred repository binding.
 
 ## Selective reads
 
@@ -28,6 +35,10 @@ Historical selectors (`revision`, `recorded_at`, `effective_at`) work on `gram_r
 
 `effective_at` selection walks revision order, uses `recorded_at` where effective time is absent, and stops when the next applicable timestamp exceeds the selected time. It is not a general merge of arbitrarily reordered historical facts. Prefer explicit revisions/recording-time queries for audit, and verify any authorized historical-state change at the affected dates.
 
+- Questions about the past: `gram_recall {query, documents: [path]}`; add `scope: "<repository>"` only in a shared repository document (see Coding-agent repository binding). Read needed narrative with `gram_read {path, section}` and explicit neighbours with `gram_relations`.
+- Some read views display a decision using its earliest implementing event date. That is an implementation date, not its acceptance date; leave it absent when no such event exists and retain documentary dates in provenance.
+- Recall: ask in a plain sentence with the default `mode` (`auto` ranks by meaning and by any matching words together). `keyword` needs every word in the record and `exact` takes one record id, so use them only for a known phrase or id. Date filters `from`/`to` (inclusive; `YYYY-MM` covers the month). `duplicates` counts repeated hits left out. Retry once with other wording before concluding nothing is recorded.
+
 ## Structured writes
 
 `gram_create` requires `{path,title,base_revision:null}` and `content` (text or `{text|rich,records,fields,blocks}`); it takes no template. Every document follows one record vocabulary (`gram@1`, `gram_profile {topic:"templates"}`): Core checks records against it and refuses violations with `E_TEMPLATE` and `details.diagnostics`. Give it a `request_id`: resending the identical create replays its receipt (`replayed:true`) instead of failing. Without one, a lost answer means inspecting the destination before retrying; never create a similarly named duplicate. An already existing path is not an overwrite route.
@@ -44,13 +55,13 @@ For a replacement of an existing `section`, the skill requires both `base_revisi
 | section | `{op:"section",heading:"## Storage",text:"Markdown under the heading"}`; for an existing section, read with `source:true` and send that response's `doc.rev` as top-level `base_revision` and `doc.hash` as `expected_hash` on `gram_patch`. A missing section is added at the end. |
 | edit-text | `{op:"edit-text",entity:"doc",kind:"rich",old:"exact unique text",new:"replacement"}` |
 
-Add field values are arrays of strings; a set takes `value` (one string) or `values`. `t` is required and single-line. Current types: `project goal requirement assumption decision task blocker risk event artifact evidence metric component system service source history knowledge context person agent run asset`. Known predicates: `part-of implements depends derives related supports contradicts replaces blocks enables`. Unsupported add predicates can be stored without appearing in relation reads; do not use them as graph links. Valid extension fields may be stored with `W_EXTENSION_FIELD`, but prefer profile fields. Unknown record types fail. A typed record accepts only its listed `x` values and needs its required fields (task, goal, project, decision and risk need `x`; event needs `at`; metric needs `value` and `unit`; artifact needs `ref`).
+Add field values are arrays of strings; a set takes `value` (one string) or `values`. `t` is required and single-line. Current types are the 22 that `gram_profile {topic:"templates"}` lists: `project goal requirement assumption decision task blocker risk event artifact evidence metric component system service source history knowledge context person agent run` ([record meanings](record-meanings.md)); `asset` and `relation` are system records, not types to author. Known predicates: `part-of implements depends derives related supports contradicts replaces blocks enables`. Unsupported add predicates can be stored without appearing in relation reads; do not use them as graph links. Valid extension fields may be stored with `W_EXTENSION_FIELD`, but prefer profile fields. Unknown record types fail. A typed record accepts only its listed `x` values and needs its required fields (task, goal, project, decision and risk need `x`; event needs `at`; metric needs `value` and `unit`; artifact needs `ref`).
 
 `source` refers to a real `source` record ID, not a URL. Put URLs in `ref`; a `ref` is something others can open, so never a `file://` URL or a local path (keep those and their hash in `d`). Preserve sourced owners/deadlines and omit unknown ones.
 
-`place` belongs on an add and supports `"end"`, `{after:"id"}` or `{section:"exact heading or node ID"}`. It requires a rich document body and cannot share a patch with `edit-text`, `rich`, `text` or `drop-text`. A record without placement can exist without being visible in the body. Operations run in order; add a target before linking to it in a patch. In create content, records may link to each other regardless of order; place them with standalone `[[id]]` lines or appropriate collections.
+`place` belongs on an add and supports `"end"`, `"none"` (exists without a body card), `{after:"id"}` or `{section:"exact heading or node ID"}`. It requires a rich document body and cannot share a patch with `edit-text`, `rich`, `text` or `drop-text`. A record without placement can exist without being visible in the body. Operations run in order; add a target before linking to it in a patch. In create content, records may link to each other regardless of order; place them with standalone `[[id]]` lines or appropriate collections.
 
-`history` is a supported record type with ordinary profile fields; it has no special lifecycle/replay schema. The source container does not dictate type. Classify atomic facts before choosing operations (SKILL.md section 2); preserve documentary decision state independently of implementation. `depends` is not evidential `supports`, and `replaces` must not imply that still-valid old scope disappeared.
+`history` is a supported record type with ordinary profile fields; it has no special lifecycle/replay schema. The source container does not dictate type. Classify atomic facts before choosing operations ([record-meanings.md](record-meanings.md)); preserve documentary decision state independently of implementation. `depends` is not evidential `supports`, and `replaces` must not imply that still-valid old scope disappeared.
 
 ## Saved presentation requirements
 
@@ -61,6 +72,21 @@ Some versions expose optional `presentation_digest` on `gram_patch`, requiring f
 If this profile returns `E_CONTEXT_BUDGET` while the exposed schema has only `path/task/topic`, there is no supported field selector or cursor to narrow it. Report saved-layout requirements as unavailable, preserve the layout and continue only independently supported record work. Do not infer that no layout exists or silently bypass the budget through another endpoint. A compact/paginated profile response is a separate integration repair.
 
 ## Recovery and completion
+
+| code | cause → fix |
+|---|---|
+| `E_PRECONDITION` | a field you read changed, the id exists with other content, or a `place` target is gone (`details.conditions`) → reread, decide, resend with a new `request_id` |
+| `E_TEMPLATE` | the write breaks the record vocabulary (a required field is missing, or the type has no such status); `details.diagnostics` names record, field, expected → fix them |
+| `STALE_REVISION`, `HASH_MISMATCH`, `E_CAS_REQUIRED` | document changed or a replacement lacks preconditions → reread the section/source, reconcile concurrent edits, and resend with that read's `doc.rev`/`doc.hash` and a new request ID; never attach a later brief's tokens to an old draft |
+| `E_ARGUMENT` | value not an array, `set` without `old`, `place` with a body edit, unknown section or argument shape |
+| `E_FIELD`, `E_LINK`, `E_TIME`, `E_MISSING_TITLE` | bad field key, unknown predicate, `effective_at` without time or zone, no `t` |
+| `E_MISSING_TARGET`, `E_MISSING_SOURCE` | link target not added yet; `source` names a non-`source` record → add it first, or cite with `ref` |
+| `E_AMBIGUOUS_TEXT` | `edit-text` `old` not found exactly once → copy from `gram_read`, widen it |
+| `E_LONG_PARAGRAPH` | your change grew an existing paragraph past 1,000 characters (`details.starts` shows which) → rewrite it as the current state in a few sentences, put new detail in its own paragraph or section, and move history into dated event records |
+| `E_DUPLICATE_ID` | id exists → `set` that record or pick another id |
+| `E_SYNTAX` (`Unrecognized source line`) | a record ID, link target or `source` value holds a character outside letters, digits, `-` and `_` (a dot in a version is the usual one), or a field key is not lower-case → fix the IDs and resend the same batch; nothing was written |
+| `E_REQUEST_REUSE` | `request_id` already used for a different request → new id |
+| `AGENT_SCOPE_DENIED`, `E_READ_ONLY`, `E_PATH` | the key, membership or policy denies it, or the path is invalid → report it; never switch to another mount or the desktop app |
 
 1. Retain the exact patch payload and response. If the response is lost, inspect the document and retry the **identical** request with the same ID. The receipt may report `replayed:true`; there is no public `gram_receipt` tool.
 2. `E_PRECONDITION`, `STALE_REVISION`, stale hash or `STORAGE_CONFLICT`: refresh the affected prose/records; preserve concurrent edits, check whether the intent remains needed and rebuild with a new request ID. Do not retry an old write blindly. Fix `E_TEMPLATE` by `details.diagnostics`; `E_CAS_REQUIRED` means the operation needs `base_revision`/`expected_hash`.
@@ -73,7 +99,16 @@ If this profile returns `E_CONTEXT_BUDGET` while the exposed schema has only `pa
 
 `at` accepts an event's known ISO date/time; task `due` can be date-only. Metric `observed` should retain the source's known precision. A timezone-bearing observation gives a supporting chart an actual time axis. `effective_at`, when deliberately used, requires a full ISO timestamp with a zone. Recording time is supplied by the runtime; never manufacture it.
 
+Only the main agent writes; subagents can supply candidates only when the user permits delegation. Never remove records that were true; change their status. Correct a wrongly classified record only with the person's consent.
+
 ## Supported representations
+
+- `[[id]]` alone on a line places a record; never place a record twice. `[label](@id)` mentions a record inside a sentence: the label is the words a reader needs there (`[the two remotes](@ctx-histories) share no ancestor`). Never append a bare mention after a finished sentence or table cell; it reads as a cut-off phrase. Mention instead of copying numbers.
+- `[[*]]{type=risk status=open view=list}` shows matching records live as cards in the document view (not on the dashboard) without placing them; `view` is `list` or `table`.
+- Callouts: `> [!note]` (or `tip`, `important`, `warning`, `caution`) followed by `> ` lines. Tables need a `|---|` row and equal cells.
+- Prose changes use `{"op":"edit-text","entity":"doc","kind":"rich","old":"<exact text, once>","new":"…"}`; it cannot share a patch with `place`, so add records first, then edit text in the next patch. Copy `old` from `gram_read` with `source:true`, which keeps the stored `[label](@id)` syntax; the plain read flattens mentions to their labels. To rewrite a whole section use `section` ([writing.md](writing.md) section 4).
+- Mermaid: only `flowchart`/`graph`; label only `-->` edges.
+- `d` on `doc` is the document summary. A document's view hint is not an account-dashboard configuration API; use only exposed presentation controls when a layout change is requested.
 
 Standalone `[[id]]` places a record. `[label](@id)` mentions a record. A field mention can be built with a rich text mark `{type:"mention",ref:"met-availability",field:"value"}` according to `gram_profile {task:"rich"}`; the mark's text should fit the sentence.
 

@@ -1,18 +1,21 @@
 {
   "source": {
-    "archive": "thegram-cloud-4.0.2.zip",
-    "sha256": "21ac9008c33326216e0192feb6670d286595381ba812825442c0d969d33ba596",
-    "version": "4.0.2",
+    "archive": "thegram-cloud-4.4.1.zip",
+    "sha256": "92bbf6509113bd5f41045e66967225536186b84a0254a0df5c333f74752052ad",
+    "version": "4.4.1",
     "path": "skills/thegram-cloud"
   },
   "files": {
-    "SKILL.md": "02bf40e443a77eaf998597a51f528da7f1e1ab9bfca07b1e92e53554f3088c68",
-    "backfill.md": "d1b321f690b36f12e7335b0c6b6248eaa73bb70cddf8b2dd3cdb8fa844879e43",
-    "references/authoring-patterns.md": "f411b9b9c5105c399218780231777a96e61912eb13dcb7a2283abb99622fe680",
-    "references/classification.json": "287f12f2a466dce2cca337da07a154a93caa2ae62a1bcbfa3ab1a7341d168269",
-    "references/contracts.md": "b3cff49ff17b1a4f32751508e25448c08623a4110d49e595d4c5cfcecdc66e2e",
-    "references/examples.md": "8278ea7e2d8d70bf92cc4de32697117036a860b2860222b19e68bd9ddefc0a1b",
-    "references/lifecycle.json": "7c9d09fc4e9a47c852f4d36b25e3b3da8679bde1e76bec0c4c55c8bd3f94fb35",
-    "references/widget-data.md": "d19315de8b8c85e532f93420b1323c329f393c2db890f9e7850a77d7cc2e7ae4"
+    "SKILL.md": "10fddee20bbe34f049b76fdf565c1500e6875615cd18ec298b2427fb2f88357a",
+    "references/automations.md": "91af8105489095f91280143f553e93ec9c90b3558f236a1e8ace088178b6b240",
+    "references/backfill.md": "1fe7ac1f785a218edcd81fce3ed7441a0fb1c9214a7bc09bd07106f46de7d2da",
+    "references/contracts.md": "c8116198950a47ef56642a8ec3e99c1aeb8339cdf8f1b7d466e1c9df4fd632ee",
+    "references/examples.md": "760d377792bfbdec10d43b76b4a2143874a3346ae58ddf7ef0d5ae4f71789b38",
+    "references/knowledge-model.md": "acc8836c8023d1b283398430c4f51e835b0d947b89c4c5c3ff63bb8541be8a21",
+    "references/person-vault.md": "af77b55828866a0e031cda1f88bcaacdc0c8e5aca20671c1e3ea74ddc5ad8f5f",
+    "references/record-meanings.md": "63eafd012d8652c285aa2185881582f93628dce1bf61fcee5ea5188eb34e53a2",
+    "references/schedule.md": "2622cc410624a4a3f6413fb167aea01bde1a4624f779d5855822ec9e79131c5c",
+    "references/widget-data.md": "648cc3e3d59ffcd5b919b39b7f16c9c92c3db91b8491c4d68faf716389116e46",
+    "references/writing.md": "a882c73e12dd392b801e315a642323f141344e25d08d4a1a91be3db40c90206e"
   }
 }

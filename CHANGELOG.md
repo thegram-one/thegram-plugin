@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.4.1 — 2026-10-27
+
+- Import the validated public 4.4.1 skill: task-driven research in bounded units, one deeply explained document per subject, typed claims with a verification basis (`basis:observed`, `basis:reported`, `basis:inferred`), version-pinned sources and `supports`/`contradicts` reasoning links, re-verification of claims whose sources changed, and a logic audit before completion.
+- `SKILL.md` becomes a compact router with always-on rules; references are one step away. Synthetic test fixtures (`classification.json`, `lifecycle.json`) and `authoring-patterns.md` leave the shipped skill; `backfill.md` moves under `references/`.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged; only versions and release notes change in the manifests.
+
 ## 4.0.2 — 2026-10-24
 
 - Import the validated public 4.0.2 workflow with self-contained records, natural-question retrieval checks and source-read revision/hash protection for section replacements.
