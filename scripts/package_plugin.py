@@ -28,6 +28,7 @@ SKILL_ROOT = "skills/thegram-cloud"
 PRIVATE_MANIFEST = ".codex-plugin/plugin.json"
 PUBLIC_FILES = ("plugin.json", "mcp.json", ".mcp.json")
 PUBLIC_TREES = ("skills", "assets", ".claude-plugin")
+CLAUDE_README = "release/claude-README.md"
 VERSION_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$")
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]\n]*\]\(([^\s)]+)(?:\s+[^)]*)?\)")
 MAX_FILES = 10000
@@ -403,12 +404,29 @@ def write_archive(files: dict[str, bytes], output: Path, source: Path | None = N
     return output
 
 
-def build_public(root: Path, output: Path, expected_version: str | None = None) -> Path:
+def public_files(root: Path) -> dict[str, bytes]:
     files = {name: read_local_file(root / name) for name in PUBLIC_FILES if (root / name).exists()}
     for tree in PUBLIC_TREES:
         if tree in ("skills", "assets") or (root / tree).exists():
             files.update(local_tree(root, tree))
+    return files
+
+
+def build_public(root: Path, output: Path, expected_version: str | None = None) -> Path:
+    files = public_files(root)
     validate_public(files, expected_version)
+    return write_archive(files, output)
+
+
+def build_claude(root: Path, output: Path, expected_version: str | None = None) -> Path:
+    """Build the account-upload ZIP for claude.ai from the same validated release tree."""
+    portable = public_files(root)
+    validate_public(portable, expected_version)
+    files = {name: data for name, data in portable.items()
+             if name in (".mcp.json", ".claude-plugin/plugin.json") or name.startswith(("skills/", "assets/"))}
+    files["README.md"] = read_local_file(root / CLAUDE_README)
+    check_file_tree(files)
+    validate_skill_files(files, ["skills"])
     return write_archive(files, output)
 
 
@@ -481,6 +499,10 @@ def main() -> int:
     build.add_argument("--root", type=Path, default=default_root)
     build.add_argument("--output", type=Path, required=True)
     build.add_argument("--expected-version")
+    claude = commands.add_parser("build-claude", help="Build the Claude account-upload ZIP")
+    claude.add_argument("--root", type=Path, default=default_root)
+    claude.add_argument("--output", type=Path, required=True)
+    claude.add_argument("--expected-version")
     validate = commands.add_parser("validate", help="Validate a portable release ZIP offline")
     validate.add_argument("archive", type=Path)
     validate.add_argument("--expected-version")
@@ -494,6 +516,9 @@ def main() -> int:
         if args.command == "build":
             verify_shared_skill(args.root)
             print(build_public(args.root, args.output, args.expected_version))
+        elif args.command == "build-claude":
+            verify_shared_skill(args.root)
+            print(build_claude(args.root, args.output, args.expected_version))
         elif args.command == "validate":
             version = validate_public(read_archive(args.archive), args.expected_version)
             print(f"Valid portable {PLUGIN_NAME} package {version}; bundled skill and references resolve")

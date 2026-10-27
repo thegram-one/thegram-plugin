@@ -6,7 +6,7 @@ Version 4.4.1 keeps the `thegram-cloud` plugin identity, the `thegram` MCP serve
 
 ## Install on Claude
 
-On claude.ai or the Claude desktop app, open **Customize > Plugins > Add > Upload plugin** to install a ZIP privately. Open the plugin's **Connectors** tab, add the Thegram connector if needed, and connect it using your own Thegram account. Installing the plugin alone does not authorize access to your data. Your plan or organization policy may control whether you can add connectors.
+On claude.ai or the Claude desktop app, open **Customize > Plugins > Add > Upload plugin** to install a ZIP privately. Download the latest Claude ZIP from https://thegram.one/download/latest/thegram-claude.zip. Open the plugin's **Connectors** tab, add the Thegram connector if needed, and connect it using your own Thegram account. Installing the plugin alone does not authorize access to your data. Your plan or organization policy may control whether you can add connectors.
 
 For Claude Code, this repository is also a marketplace:
 
@@ -63,14 +63,25 @@ The importer validates the archive before writing, replaces only its owned skill
 ## Build and verification
 
 ```sh
-python3 -B scripts/package_plugin.py build --output /tmp/thegram-cloud-4.4.1.zip --expected-version 4.4.1
-python3 -B scripts/package_plugin.py validate /tmp/thegram-cloud-4.4.1.zip --expected-version 4.4.1
+python3 -B scripts/package_plugin.py build --output /tmp/thegram-cloud.zip
+python3 -B scripts/package_plugin.py validate /tmp/thegram-cloud.zip
+python3 -B scripts/package_plugin.py build-claude --output /tmp/thegram-claude.zip
 claude plugin validate .claude-plugin/plugin.json --profile directory --strict --json
 ```
 
 Complete all changes and builds before one final integrated E2E. Do not run individual unit, per-feature or partial scenarios during release work. The final run must cover the matching runtime, release packaging, source-pin integrity and actual Claude manifest validation, and retain repeatable reports. A failed run requires a fix, completed builds and a rerun of the complete final E2E.
 
 The archived live harnesses under `tests/e2e/` are not evidence of a new host installation or permission grant. Do not run them against a production account without explicit authorization. Keep test accounts, credentials, private reviewer details and local machine state out of public files.
+
+## Releases and latest downloads
+
+Pushing a `v<version>` tag that matches `plugin.json` runs `.github/workflows/release.yml`. It builds the portable and Claude ZIPs, attaches them under stable names (`thegram-cloud.zip`, `thegram-claude.zip`) together with versioned copies and `SHA256SUMS`, and marks the release as latest. Links never name a version:
+
+- Portable/ChatGPT/agents: https://github.com/thegram-one/thegram-plugin/releases/latest/download/thegram-cloud.zip
+- Claude upload: https://github.com/thegram-one/thegram-plugin/releases/latest/download/thegram-claude.zip
+- thegram.one aliases: `https://thegram.one/download/latest/thegram-cloud.zip`, `…/thegram-claude.zip`, and `…/download/latest/` for the release page
+
+To release, bump the three manifest versions and the CHANGELOG, merge, then `git tag v<version> <merge-commit> && git push origin v<version>`.
 
 ## Review materials and release
 
