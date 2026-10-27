@@ -2,6 +2,32 @@
 
 Read this when authoring data for a dashboard, timeline, calendar or graph. Correct classification comes first; a widget's empty state is preferable to invented facts. A saved widget selects records, not commit prose. Record validity, readiness and visible rendering are separate checks.
 
+Contents: What the dashboard counts · Authoring rules for displays · Inspect the target before promising a display · Inspected widget data contract
+
+## What the dashboard counts
+
+Widgets select stored records, their template states, relationships and real history; they do not turn commit prose into progress. Never add, split, relabel or complete records to move a number. With the person's consent, correct a misclassified record to the type its facts support (which may be a task update, decision, component, evidence, artifact, event or coverage only). Preserve useful content and provenance; removals require fresh CAS. Do not force every wrongly recorded commit into an event.
+
+| Surface | Data needed | Authoring consequence |
+|---|---|---|
+| Task board/checklist and progress rings | selected tasks and their status class | track real work; update existing tasks from completion evidence; do not manufacture historical tasks |
+| Goal progress | tasks with `part-of` that goal | `related` does not count; a goal with no linked tasks can remain without a ratio |
+| Decisions/pending choices | decision `x`; full replacement `replaces` links | proposed stays proposed despite merged code; acceptance is distinct from implementation |
+| Risk/attention | actual risks/blockers, explicit states and sourced priority | an empty attention list does not prove health |
+| Calendar/timeline | event `at`, metric `observed`, other records' supported `due` | omit unknown dates; a source commit date is not every fact's occurrence date |
+| Metric trend | same ID, numeric `value`, same `unit`, sourced `observed` and available history | retain real observations; never create revisions just to draw a line |
+| Activity/revision history | actual runtime recording time and loaded revision history | imports remain recorded today; no fake commit-era activity |
+| Automation (new items, runs, sources, watched targets) | `run` events; items with `derives` to their run, `ref`, `at`, `source:`/`topic:` tags; `target` records and `related` detections | one run record per real run; reuse items and targets; see [automations.md](automations.md) |
+| Sync/team/presence/workspace | runtime/capability data | document records cannot fabricate live sync, membership, presence or access |
+
+The inspected newer widget model counts completion as done ÷ (open + done), excluding closed and unknown states; older Core tracker summaries can use all-task totals. Check the target's current contract and selected records before explaining a percentage.
+
+## Authoring rules for displays
+
+- For saved widgets, read this file and, when exposed, `gram_profile {path, topic:"presentation"}`. Preserve the saved layout and report missing data or unavailable capabilities; never invent records, owners or dates to make a widget ready.
+- Metrics: one `metric` record per quantity (`value` a plain number, constant `unit`, `observed` a past ISO time with zone). Each new measurement is `set value` + `set observed` on that record, never a new record.
+- Record-derived document views and personal dashboard arrangements are separate. Preserve the current host's saved layout; a starter recommendation does not install widgets or change account preferences. Older template/view hints do not establish the current personal dashboard configuration.
+
 ## Inspect the target before promising a display
 
 1. Read the relevant records, fields and links. When available, request `gram_profile {path,topic:"presentation"}` for saved selectors, required fields, capability needs, readiness and digest. A view's default arrangement is not proof of the person's saved arrangement.
@@ -37,18 +63,6 @@ Selection intersects the widget kind's allowed types, default type when present,
 
 Older Core projections can use an all-task tracker denominator; newer widget `share` excludes closed/unknown statuses. Core event timelines read event `at`; revision activity reads recording time. These are different axes. Operational recovery projections additionally require actual risk-linked tagged events and evidence links: only author incident/recovery tags and relations if those facts are supported. Source acceptance alone is not live health. See the matching Core projection contract before claiming a derived recovery state.
 
-Readiness checks structural counts and selected fields; it does not establish source consistency, loaded historical observations or useful rendering. A `metric-trend` can be profile-ready with one metric but still have only one actual point. Test those layers separately. The current catalog has 60 widget kinds in 11 families; do not invent one entity per kind.
+Readiness checks structural counts and selected fields; it does not establish source consistency, loaded historical observations or useful rendering. A `metric-trend` can be profile-ready with one metric but still have only one actual point. Test those layers separately. Do not invent one record per widget kind.
 
 Team standup uses sourced task `done`, with a native status-change recording-time fallback when it is absent. Importing an old completion today without a known finish date may therefore appear as recent work in that surface. Disclose this renderer limit; do not invent `done` or old revisions. Handoffs require actual native `owner` before/after changes and author/member resolution; an event saying “handed off” does not supply that history. Person records do not create membership, and source reports do not produce sync/save state.
-
-## Evidence and offline verification
-
-Source contracts inspected locally on 2026-10-19:
-
-- `clab-one/thegram-ui` at `6ace2f9` (the tested model/data/registry/time files also match `6b1dd1d79ee7974a2568e9e40675fd56d62fd4cc`): `src/features/dashboard/model/data.ts` (`selection`, `share`, `goalTasks`, `whenOf`, `series`, `attention`, `edges`, `revisionsByDay`), `model/registry.ts`, `model/layout.ts`, `widgets/risk.tsx`, `widgets/time.tsx`.
-- `clab-one/thegram-vault` at `6aff43c`: `internal/mcp/presentation.go`, `gateway.go`, `tools_write.go`, `tools_common.go`; `internal/market/profile.go`, `widgets_v2.go`, `readiness.go`. Relevant inspected contract files are tracked; the checkout also contains unrelated working changes, not part of this skill update.
-- `clab-one/thegram-format` at `298ed2296c99a6a53dcc63b8556cfcf9216fb731`: `spec/projection.md`, template/native projection contract (compared with older `5fa4913`). Source contract inspection does not establish the currently deployed binary version.
-
-The canonical offline classification fixture is [classification.json](classification.json). `tests/test_classification.py` checks typed plans/state/provenance/statuses/relations and rejects known bad plans. `tests/widget_contract.test.mjs` imports the actual configured UI model/registry without editing it and feeds the fixture records into its selectors/counters/date mapping/metric series/relations/history helpers. Set `THEGRAM_UI_SOURCE` to the inspected UI checkout and run with a Node version supporting TypeScript stripping and `registerHooks`.
-
-These tests do not run a language model, render React/browser UI, call the live MCP endpoint or prove OAuth/provider/sync. The separate lifecycle gateway harness can check actual wrapper/Core writes in scratch storage when compatible local dependencies are available. Never describe fixture source reports as this agent's runtime verification of a real deployment.
