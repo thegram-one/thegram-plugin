@@ -93,7 +93,8 @@ Save an item's source, the claims it establishes, their links and the affected p
 
 ## 7. Read and answer
 
-- Find with `gram_recall {query, folder}` in a plain sentence (default `auto` mode); retry once with other wording before concluding nothing is recorded. Open hits with `gram_context`, sections with `gram_read {path, section}` and neighbours with `gram_relations {from}`.
+- Find with `gram_recall {query, folder}` in a plain sentence (default `auto` mode); retry once with other wording before concluding nothing is recorded. Open hits with `gram_context`, sections with `gram_read {path, section}` and neighbours with `gram_relations {from}`. A first page that stops with `LOW_RELEVANCE` already holds the strong matches; follow `more` only when the question needs every match.
+- When the person asks what an earlier answer relied on, keep that recall's `receipt` and run `gram_replay {receipt}`: it shows whether the same records come back from the documents as they were then.
 - For "why" questions follow `supports`/`contradicts` with `gram_relations` and give each step's basis; say when a reason is not recorded instead of inventing one.
 - Past states: `revision`, `effective_at` or `recorded_at` on `gram_read`, `gram_list {path}` and each `gram_context` item; `gram_changes` lists what changed.
 - Answers cite `path#id` or the section, keep observed, reported and inferred claims distinct, and write nothing.

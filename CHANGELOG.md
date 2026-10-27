@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.4.2 — 2026-10-27
+
+- Import the validated public 4.4.2 skill for the 18-tool cloud surface: `gram_replay {receipt}` re-runs an earlier recall against the documents as they were, and `gram_recall` first pages carry a `receipt`.
+- A recall first page that stops with `LOW_RELEVANCE` holds the strong matches; the skill follows `more` past it only when a question needs every match, and still follows and reports other incomplete coverage.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged; only versions and release notes change in the manifests.
+
 ## 4.4.1 — 2026-10-27
 
 - Import the validated public 4.4.1 skill: task-driven research in bounded units, one deeply explained document per subject, typed claims with a verification basis (`basis:observed`, `basis:reported`, `basis:inferred`), version-pinned sources and `supports`/`contradicts` reasoning links, re-verification of claims whose sources changed, and a logic audit before completion.
