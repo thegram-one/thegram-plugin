@@ -1,21 +1,21 @@
 {
   "source": {
-    "archive": "thegram-cloud-4.4.2.zip",
-    "sha256": "452dda049c715e21e70378c5f3b92be2002e72fa13f660242e0af414429ba206",
-    "version": "4.4.2",
+    "archive": "thegram-cloud-4.4.3.zip",
+    "sha256": "3554fbae14862445c001334383f2e0b2f33bd342cf48caa8ebc960bb5262e047",
+    "version": "4.4.3",
     "path": "skills/thegram-cloud"
   },
   "files": {
-    "SKILL.md": "38a0281feab46e644b65acaa8e669d9aaeaaaea20b0c89ed55fc91a5eb26bd1c",
-    "references/automations.md": "91af8105489095f91280143f553e93ec9c90b3558f236a1e8ace088178b6b240",
-    "references/backfill.md": "1fe7ac1f785a218edcd81fce3ed7441a0fb1c9214a7bc09bd07106f46de7d2da",
-    "references/contracts.md": "b6591774f6ce54ad862a3274d4b9efb825df8bec48fb27e328e13557ae9b56ba",
-    "references/examples.md": "760d377792bfbdec10d43b76b4a2143874a3346ae58ddf7ef0d5ae4f71789b38",
-    "references/knowledge-model.md": "acc8836c8023d1b283398430c4f51e835b0d947b89c4c5c3ff63bb8541be8a21",
-    "references/person-vault.md": "af77b55828866a0e031cda1f88bcaacdc0c8e5aca20671c1e3ea74ddc5ad8f5f",
-    "references/record-meanings.md": "63eafd012d8652c285aa2185881582f93628dce1bf61fcee5ea5188eb34e53a2",
+    "SKILL.md": "0a6563fb691719d9a50b9f19c0268d138b587a26524ad1cab377115effa126c8",
+    "references/automations.md": "f2f4bc6765d1b50e76822f6533314db4ef6df8715c01711b81e734693631cb89",
+    "references/backfill.md": "5649d23aeab7e784d86d62f24ba244b90e404e28915b52e69a1f5c51dab5a48c",
+    "references/contracts.md": "4e32d0620c19c8652a2325deb81e65f787478fa52a0bc30d1e063262b23a3f2e",
+    "references/examples.md": "c45300c9641828d6f0a6f1e90f3f56c77ef9ab2884b064ea08b43f57a37e0d4e",
+    "references/knowledge-model.md": "16569e40915f9401bc672f2b181f5f2ea52af0a9f3ffe4be9894458c05eb125c",
+    "references/person-vault.md": "80ae9e0936990c75e9ae0091742bc92e5615a5a433dce532ae123a4d2e7df42e",
+    "references/record-meanings.md": "3cfd7054b7441a97df8297a9cba3b8eb202dce42e4b941043d1754a81ea1acd7",
     "references/schedule.md": "2622cc410624a4a3f6413fb167aea01bde1a4624f779d5855822ec9e79131c5c",
-    "references/widget-data.md": "648cc3e3d59ffcd5b919b39b7f16c9c92c3db91b8491c4d68faf716389116e46",
-    "references/writing.md": "a882c73e12dd392b801e315a642323f141344e25d08d4a1a91be3db40c90206e"
+    "references/widget-data.md": "2f8e2b6cce5f0716ba3fc36ab95428d682eb89365e027226d642a3167a838ce6",
+    "references/writing.md": "6e82a1d12e345736d0f4d187b7a002fe0f4b5f728bfc4bbd9fcc101d6b46e961"
   }
 }

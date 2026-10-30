@@ -24,13 +24,13 @@ The inspected newer widget model counts completion as done ÷ (open + done), exc
 
 ## Authoring rules for displays
 
-- For saved widgets, read this file and, when exposed, `gram_profile {path, topic:"presentation"}`. Preserve the saved layout and report missing data or unavailable capabilities; never invent records, owners or dates to make a widget ready.
+- For saved widgets, read this file and, when exposed, `vault_guide {path, topic:"presentation"}`. Preserve the saved layout and report missing data or unavailable capabilities; never invent records, owners or dates to make a widget ready.
 - Metrics: one `metric` record per quantity (`value` a plain number, constant `unit`, `observed` a past ISO time with zone). Each new measurement is `set value` + `set observed` on that record, never a new record.
 - Record-derived document views and personal dashboard arrangements are separate. Preserve the current host's saved layout; a starter recommendation does not install widgets or change account preferences. Older template/view hints do not establish the current personal dashboard configuration.
 
 ## Inspect the target before promising a display
 
-1. Read the relevant records, fields and links. When available, request `gram_profile {path,topic:"presentation"}` for saved selectors, required fields, capability needs, readiness and digest. A view's default arrangement is not proof of the person's saved arrangement.
+1. Read the relevant records, fields and links. When available, request `vault_guide {path,topic:"presentation"}` for saved selectors, required fields, capability needs, readiness and digest. A view's default arrangement is not proof of the person's saved arrangement.
 2. Map each requested widget to existing records and supported atomic facts. Preserve selected IDs, `recordType`, exact `status`, and legitimate gaps. Do not change a valid type/status to force selection. Unknown owner/priority/date stays absent even if readiness wants it.
 3. Save only authorized factual changes. Preserve `ui-layout`, fixed sidebars and other user presentation. New layouts and publication need their own requested scope. Use an optional `presentation_digest` only if the tool exposes it and a current digest was actually returned, with the required fresh CAS pair.
 4. Read back the fields, links, placement and real history. Recheck readiness if available. Report selector/model testing separately from actual host rendering and runtime verification.

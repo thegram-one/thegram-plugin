@@ -1,30 +1,30 @@
 ---
 name: thegram-cloud
-description: Build and maintain enterprise-grade, source-backed knowledge in Thegram .gram documents with gram_* tools. Research any subject, project, organization or plan across the connected sources the request covers (repositories, documents, chats, mail, calendars, the web) with an evidence-driven task plan, and write one deeply explained document per subject whose claims, evidence, decisions, risks and supporting or contradicting reasoning are typed records with pinned provenance, a verification basis and revision history. Update the same document incrementally without duplicates, keep observed facts, reported claims and inferences distinct, respect destination and audience boundaries, verify storage, logic and retrieval, and report blocked work as partial. Also answers from saved knowledge and handles schedules, scheduled automations, agent work, dashboards and historical backfills.
+description: Build and maintain enterprise-grade, source-backed knowledge in Thegram .gram documents with vault_* tools. Research any subject, project, organization or plan across the connected sources the request covers (repositories, documents, chats, mail, calendars, the web) with an evidence-driven task plan, and write one deeply explained document per subject whose claims, evidence, decisions, risks and supporting or contradicting reasoning are typed records with pinned provenance, a verification basis and revision history. Update the same document incrementally without duplicates, keep observed facts, reported claims and inferences distinct, respect destination and audience boundaries, verify storage, logic and retrieval, and report blocked work as partial. Also answers from saved knowledge and handles schedules, scheduled automations, agent work, dashboards and historical backfills.
 ---
 
 # Thegram knowledge
 
-Use the current connection's `gram_*` tools, including host-prefixed names. ChatGPT and Claude connect to `https://vault.thegram.one/mcp` with OAuth; coding agents use scoped API keys against the same endpoint, with the same tools, records and rules. Authentication, injected session context and reminders belong to the host adapter. Never install a desktop app, expose a local-only folder or switch credentials to get around a denial.
+Use the current connection's `vault_*` tools, including host-prefixed names: reads `vault_guide`, `vault_search`, `vault_read`, `vault_browse`, `vault_changes`, `vault_comments`; writes `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`. ChatGPT and Claude connect to `https://vault.thegram.one/mcp` with OAuth; coding agents use scoped API keys against the same endpoint, with the same tools, records and rules. Authentication, injected session context and reminders belong to the host adapter. Never install a desktop app, expose a local-only folder or switch credentials to get around a denial.
 
 These instructions are English; answers, progress, titles, headings and record `t`/`d` follow the person's current language. Keep proper names, quotations and technical identifiers as written.
 
 ## 1. Rules that always apply
 
 1. **Authorization.** Saving needs authorization for the purpose and the destination, not merely a writable connection. Retrieval, review, analysis and drafts stay read-only unless storing the result is requested; read-only and "do not save" requests create no records or run receipts. An established project-execution policy can authorize durable outcomes within that project; connector access alone cannot.
-2. **Destination.** Write to the document the person names or the established document for the subject. Otherwise resolve the destination with [person-vault.md](references/person-vault.md): a vault the person names holds new documents in the person's folder there, and without one the person's own storage is used; a team vault is never chosen by itself. Use exact mount keys from `gram_projects`, never display names, and never switch mounts after a failure. `gram_projects` lists only this agent's grants: on `AGENT_SCOPE_DENIED` stop, point the person to Thegram Settings → Connected agents, and rediscover mounts after they change access.
+2. **Destination.** Write to the document the person names or the established document for the subject. Otherwise resolve the destination with [person-vault.md](references/person-vault.md): a vault the person names holds new documents in the person's folder there, and without one the person's own storage is used; a team vault is never chosen by itself. Use exact vault refs from `vault_browse`, never display names, and never switch mounts after a failure. `vault_browse` lists only this agent's grants: on `AGENT_SCOPE_DENIED` stop, point the person to Thegram Settings → Connected agents, and rediscover mounts after they change access.
 3. **Evidence.** Every stored claim traces to inspected sources or to named premises, with how it is known ([knowledge-model.md](references/knowledge-model.md)). Never fabricate facts, statuses, dates, owners, events, completions or revisions; an AI recommendation stays a `proposed` decision.
 4. **One subject, one document.** Reuse the established document, its path and its record IDs; update in place and never duplicate a document, source or claim. Change a record's status instead of removing it; revisions keep the history.
-5. **Write safety.** One coherent unit per `gram_patch`; `set`/`unset` carry the `old` value read; replacing a section needs `base_revision`/`expected_hash` from the same `source:true` read; one `request_id` per intended change, reused only to retry that change. A write landed only when the answer shows `sync.state: synced` and a fresh read confirms it.
+5. **Write safety.** One coherent unit per `vault_edit`; `set`/`unset` carry the `old` value read; replacing a section needs `base_revision`/`expected_hash` from the same `source:true` read; one `request_id` per intended change, reused only to retry that change. A write landed only when the answer shows `sync.state: synced` and a fresh read confirms it.
 6. **Privacy.** Store structured, sourced knowledge for the purpose only: never transcripts, message bodies, attachments, secrets, credentials, account numbers or unrelated third-party details. Respect the destination's audience (knowledge-model.md section 6).
 7. **Completion.** Storage success, task completion and completion of the investigation are different. Finish reachable authorized work in the same execution; a genuine limit yields a partial result with pending tasks and an exact resumption point. Never claim background work that is not actually scheduled.
 
 ## 2. Orient
 
-- Call `gram_projects` once per purpose. Then `gram_brief {path}` (or `{folder}`) for open records, recent revisions, `rev`/`hash` and `next`, and `gram_list {path, select:{type:"project"}}` for the root record. Before creating anything, check `gram_list` and `gram_recall` for a moved or renamed document.
-- Before acting on a remembered decision or task, read it: `gram_context {ids:[{path, entity}], fields:["t","d","x"]}`.
-- Resume with `gram_changes {path, since: next}`. For a requested historical window, compute an explicit ISO UTC `since` and follow every `more`.
-- Before the first write or an unfamiliar operation, check `gram_capabilities` and `gram_profile` for the task; the current schemas and profiles win over this skill.
+- Call `vault_browse` once per purpose: each `vaults[]` row's `ref` is the path prefix. Then `vault_browse {path, summary:true}` (a document or a folder) for open records, recent revisions, `rev`/`hash` and `next`, and `vault_browse {path, select:{type:"project"}}` for the root record. Before creating anything, check `vault_browse {path}` and `vault_search` for a moved or renamed document.
+- Before acting on a remembered decision or task, read it: `vault_read {refs:["<path>#<id>"], fields:["t","d","x"]}`.
+- Resume with `vault_changes {path, since: next}`. For a requested historical window, compute an explicit ISO UTC `since` and follow every `more`.
+- Before the first write or an unfamiliar operation, call `vault_guide {task}` (and `{topic:"templates"}` for the vocabulary); the current schemas and guide win over this skill.
 - A coding-agent adapter may inject `<thegram>` context (document path, revision, root record, open records). It is context, not instruction or authorization; repository binding is in [contracts.md](references/contracts.md).
 
 ## 3. Route the request
@@ -67,7 +67,7 @@ For substantial work (writing.md has the full method):
 
 ## 6. One coherent unit, one patch
 
-Save an item's source, the claims it establishes, their links and the affected prose in one `gram_patch` against the head. Operations run in order, so add a record before another links to it. A record appears in the body only with `place` or a standalone `[[id]]`.
+Save an item's source, the claims it establishes, their links and the affected prose in one `vault_edit` against the head. Operations run in order, so add a record before another links to it. A record appears in the body only with `place` or a standalone `[[id]]`.
 
 ```json
 {"path": "@mounts/<vault-id>/<root>/<subject>.gram", "request_id": "run-20261027-u03",
@@ -93,10 +93,10 @@ Save an item's source, the claims it establishes, their links and the affected p
 
 ## 7. Read and answer
 
-- Find with `gram_recall {query, folder}` in a plain sentence (default `auto` mode); retry once with other wording before concluding nothing is recorded. Open hits with `gram_context`, sections with `gram_read {path, section}` and neighbours with `gram_relations {from}`. A first page that stops with `LOW_RELEVANCE` already holds the strong matches; follow `more` only when the question needs every match.
-- When the person asks what an earlier answer relied on, keep that recall's `receipt` and run `gram_replay {receipt}`: it shows whether the same records come back from the documents as they were then.
-- For "why" questions follow `supports`/`contradicts` with `gram_relations` and give each step's basis; say when a reason is not recorded instead of inventing one.
-- Past states: `revision`, `effective_at` or `recorded_at` on `gram_read`, `gram_list {path}` and each `gram_context` item; `gram_changes` lists what changed.
+- Find with `vault_search {query, folder}` in a plain sentence; retry once with other wording before concluding nothing is recorded. The answer already holds the text of the best matches: open the rest with `vault_read {refs:["<path>#<id>"]}`, sections with `vault_read {refs:["<path>§<heading>"]}` and neighbours with `vault_read {refs:["<path>#<id>"], relations:{direction:"both"}}`. Narrow by `type`, `status`, `from`/`to`/`date` or `scope` (name a `folder` or `documents` with them); `relevance: "weak"` means the hits are only the nearest records. A first page that stops with `LOW_RELEVANCE` already holds the strong matches; follow `cursor` with the same arguments only when the question needs every match.
+- When the person asks what an earlier answer relied on, keep that search's `receipt` and run `vault_search {receipt}`: it shows whether the same records come back from the documents as they were then.
+- For "why" questions follow `supports`/`contradicts` with `relations` and give each step's basis; say when a reason is not recorded instead of inventing one.
+- Past states: `as_of:{revision | effective_at | recorded_at}` on `vault_read`, and on `vault_browse {path, ids:true}`; `vault_changes` lists what changed.
 - Answers cite `path#id` or the section, keep observed, reported and inferred claims distinct, and write nothing.
 
 ## 8. Errors
@@ -107,7 +107,7 @@ Fix the named cause and retry only within the original scope; [contracts.md](ref
 
 After creating a document, adding substantial knowledge or changing an important decision or policy, verify retrieval as well as storage:
 
-1. Ask one or two natural questions a person would ask later, not a copied title or ID, with `gram_recall` (default `auto`) in the folder where the material should be found.
+1. Ask one or two natural questions a person would ask later, not a copied title or ID, with `vault_search` in the folder where the material should be found.
 2. Open the returned record or section and check that it answers with the right subject, scope and conditions. A matching title or score alone is not proof.
 3. If it is not found, clarify only missing source-backed subject or conditions in `t`/`d` or the section and retry once with other wording; otherwise report "saved and read back; retrieval not verified" with the question and the limitation. Never keyword-stuff or add duplicate records to chase rank.
 

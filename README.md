@@ -2,7 +2,7 @@
 
 Thegram is shared, structured memory for people and AI assistants. This plugin pairs the Thegram remote MCP connector with one memory skill. Ask Claude or another supported host to find an earlier decision, retrieve a project's current constraints, or save an explicitly authorized outcome with its sources. Plans, notes, ideas, tasks and knowledge stay in structured `.gram` files rather than disconnected conversation transcripts.
 
-Version 4.4.2 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the current 18-tool memory surface, including `gram_replay` for re-running an earlier recall. The skill turns a research request into an evidence-driven task plan, maintains one deeply explained document per subject, records each material conclusion as a typed claim with a verification basis, version-pinned sources and supports/contradicts reasoning links, re-verifies claims whose sources changed, and keeps protecting section replacements with the original read's revision and hash.
+Version 4.4.3 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the current 13-tool surface (`vault_guide`, `vault_search`, `vault_read`, `vault_browse`, `vault_changes`, `vault_comments`, `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`), including `vault_search {receipt}` for re-running an earlier search. The skill turns a research request into an evidence-driven task plan, maintains one deeply explained document per subject, records each material conclusion as a typed claim with a verification basis, version-pinned sources and supports/contradicts reasoning links, re-verifies claims whose sources changed, and keeps protecting section replacements with the original read's revision and hash.
 
 ## Install on Claude
 
@@ -29,7 +29,7 @@ Local validation is not a portal security scan, host installation, OAuth test or
 
 ## Storage and access
 
-Cloud and separately connected Drive mounts are visible only when allowed by the current connection. Use the exact keys returned by `gram_projects`; reuse the established document instead of inventing a path, copying between mounts or redirecting a failed save. Local-only Mac folders are not visible to the cloud server.
+Cloud and separately connected Drive mounts are visible only when allowed by the current connection. Use the exact refs returned by `vault_browse`; reuse the established document instead of inventing a path, copying between mounts or redirecting a failed save. Local-only Mac folders are not visible to the cloud server.
 
 Each agent has its own access scope. Connecting Drive or owning another vault does not automatically expose it to that agent. Manage grants and disconnect agents in **Settings > Connected agents** at https://vault.thegram.one/settings/agents. A writable connection still requires user authorization before saving.
 
@@ -50,12 +50,12 @@ No local MCP command, lifecycle hook or automatic package installation is declar
 
 ## Shared workflow provenance
 
-The cloud skill and references come from the validated public `thegram-cloud-4.4.2.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file. This replaces the obsolete `skills/thegram-memory` commit pin; the release does not pretend that uncommitted workflow edits came from an older source commit.
+The cloud skill and references come from the validated public `thegram-cloud-4.4.3.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file. This replaces the obsolete `skills/thegram-memory` commit pin; the release does not pretend that uncommitted workflow edits came from an older source commit.
 
 To import a later validated public release without changing the cloud skill identity:
 
 ```sh
-python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.4.2.zip
+python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.4.3.zip
 ```
 
 The importer validates the archive before writing, replaces only its owned skill tree and updates the lock. Do not edit the generated skill independently. Keep `plugin.json`, `.claude-plugin/plugin.json` and the matching `.claude-plugin/marketplace.json` entry on the same release version. Preserve both remote MCP configurations and the registered name.
@@ -85,7 +85,7 @@ To release, bump the three manifest versions and the CHANGELOG, merge, then `git
 
 ## Review materials and release
 
-The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.4.2 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
+The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.4.3 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
 
 Follow [CHANGELOG.md](CHANGELOG.md). A source push lets the directory detect and scan a new version; it does not mean the version is approved or published. Do not withdraw an existing review, change its tracked branch, create another registration or change automatic-publication settings as a workaround. Publishing source and a plugin package does not deploy the server or change OAuth scopes or credentials.
 
