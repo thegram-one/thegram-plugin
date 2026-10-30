@@ -4,9 +4,9 @@ These examples are fictional (`prj-atlas`, `prj-strings`, `example.com`, `<vault
 
 ## Retrieve before deciding
 
-For "What did we choose for Atlas rollout, and is it actually shipped?", discover mounts, brief the existing document, recall rollout decisions, then read their context, implementing events and supporting evidence with `gram_relations`. The correct answer distinguishes an accepted decision from verified implementation and says which claims are observed, reported or inferred. This request alone causes **no write**.
+For "What did we choose for Atlas rollout, and is it actually shipped?", discover vaults, summarize the existing document, search for rollout decisions, then read their records, implementing events and supporting evidence with `vault_read` and its `relations`. The correct answer distinguishes an accepted decision from verified implementation and says which claims are observed, reported or inferred. This request alone causes **no write**.
 
-On a later visit use `gram_changes` with the saved `next`, then fetch the relevant changed records. For "What did we know before rollout?" use `gram_read {path, revision: 0}` or a sourced recording-time boundary. Do not derive a past state by deleting current records in a copy.
+On a later visit use `vault_changes` with the saved `next`, then fetch the relevant changed records. For "What did we know before rollout?" use `vault_read {refs:["<path>#<id>"], as_of:{revision: 0}}` or a sourced recording-time boundary. Do not derive a past state by deleting current records in a copy.
 
 ## Replace a choice, keep its evidence and close a risk
 
@@ -37,14 +37,14 @@ This patch assumes a sourced full replacement and an inspected passing report; i
 
 ## Create and evolve within an authorized destination
 
-Asked to establish a project's memory, one `gram_create` sets up readable sections around the subject's questions (for a project often Overview, Architecture, Plan, Decisions, Evolution and Log) with its root, goals, tasks, components, decisions, metrics, sources and evidence in one real revision; an older observation time does not backdate the document. The approved choice and its remaining verification task are explained in the narrative, not only as dates and links. Later, four separately verified outcomes are each one patch:
+Asked to establish a project's memory, one `vault_create` sets up readable sections around the subject's questions (for a project often Overview, Architecture, Plan, Decisions, Evolution and Log) with its root, goals, tasks, components, decisions, metrics, sources and evidence in one real revision; an older observation time does not backdate the document. The approved choice and its remaining verification task are explained in the narrative, not only as dates and links. Later, four separately verified outcomes are each one patch:
 
 1. **Replace a choice:** preserve the previous decision, set `superseded`, create the accepted replacement with `replaces`, and attach source/evidence explaining why the constrained preview replaces gradual rollout. Adoption is still distinct from execution.
 2. **Complete verified work:** only after the fictional check confirms the intended endpoint, set the existing task and goal to `completed`; add an event `implements` the accepted choice, an artifact `derives` that event, and evidence supporting the completed task. Avoid creating a second “completed task” record.
 3. **Reconcile narrative:** an exact `edit-text` updates Overview and Evolution after the structured outcome. This is separate from adds with `place`; use the last returned rev/hash. Compare the overview and details before calling the document complete.
 4. **Record a new measurement:** update the same `met-availability` numeric value and observation time, keep its definition/unit, add the specific report and supporting evidence, and link the metric to that report. The earlier report remains in the document. Readback requests `value`, `unit`, `observed` and `source` explicitly. Two real observations may yield two chart points on a supporting renderer; never fabricate points between them.
 
-Use the current document's exact section heading/node ID. Follow `gram_profile` when preserving/adding rich nodes. `[[*]]{type=task status=active view=list}` and `[[*]]{type=risk status=open view=table}` are useful only when actual matching records exist; an empty collection does not justify inventing a task or risk.
+Use the current document's exact section heading/node ID. Follow `vault_guide {task:"rich"}` when preserving/adding rich nodes. `[[*]]{type=task status=active view=list}` and `[[*]]{type=risk status=open view=table}` are useful only when actual matching records exist; an empty collection does not justify inventing a task or risk.
 
 ## Uncertain replies and concurrent changes
 

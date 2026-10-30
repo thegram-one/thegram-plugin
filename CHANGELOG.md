@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.4.3 — 2026-10-30
+
+- Move the bundled skill, references and review cases from the 18 `gram_*` tools to the 13 `vault_*` tools the server now lists: `vault_guide`, `vault_search`, `vault_read`, `vault_browse`, `vault_changes`, `vault_comments`, `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`.
+- Reads keep their reach: `vault_search` takes the ranked recall's filters (`type`, `status`, `from`/`to`/`date`, `scope`, `mode`, `as_of`) and returns its `receipt`, `relevance` and `LOW_RELEVANCE` guidance, and `vault_search {receipt}` re-runs an earlier search; `vault_browse` lists vaults and folders, summarizes a document, lists records by `select {type, status, ...}` and a document's entity ids; `vault_read` reads records, sections (`§heading`, `§제3조`) and documents, at a past state with `as_of`, and follows a record's links with `relations`.
+- A filtered search reads one folder of at most one cell of documents and a `select` five cells; a wider scope returns `E_SCOPE_TOO_WIDE` with the folders to choose from. `vault_guide` never fails on its own arguments.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged; only versions, release notes and the review cases' tool names change in the manifests. Needs the vaultd release that lists the `vault_*` tools (thegram-one/thegram-vault#246, #247 and #248); rescan the MCP server on the plugin page.
+
 ## 4.4.2 — 2026-10-27
 
 - Import the validated public 4.4.2 skill for the 18-tool cloud surface: `gram_replay {receipt}` re-runs an earlier recall against the documents as they were, and `gram_recall` first pages carry a `receipt`.

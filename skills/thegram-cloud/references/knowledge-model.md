@@ -27,7 +27,7 @@ Tag every `knowledge`, `requirement`, `risk`, `evidence` and `metric` record wit
 
 ## 3. Reasoning links: make the argument traversable
 
-The body explains the argument; links let `gram_relations` answer "why do we believe this?" without rereading prose. Use only Core predicates, read "A predicate B":
+The body explains the argument; links let `vault_read` with `relations` answer "why do we believe this?" without rereading prose. Use only Core predicates, read "A predicate B":
 
 | Argument step | Link |
 |---|---|
@@ -56,7 +56,7 @@ The body explains the argument; links let `gram_relations` answer "why do we bel
 
 ## 5. Identity, terms and documents
 
-- One entity, one record: reuse sources by identity, claims by proposition, components by responsibility, metrics by definition and unit. Search the document (`gram_list`, `gram_recall`) before adding.
+- One entity, one record: reuse sources by identity, claims by proposition, components by responsibility, metrics by definition and unit. Search the document (`vault_browse {path, select}`, `vault_search {query, documents:[path]}`) before adding.
 - Define each important term once (a `knowledge` record or a terms section), keep its aliases and original-language term in `d`, then use that term consistently. No synonyms for variety.
 - Each subject has one home document. Another document that needs the same entity or claim cites it (`path#id` in prose, or the record's openable Thegram URL in `ref`) instead of redefining or copying it; links stay within a document.
 - When the person asks for an overview of several subjects (an organization, a product line, a portfolio), write one map document that explains how the subjects relate and cites each home document. It summarizes with citations and holds no duplicate claims.
@@ -67,7 +67,7 @@ The body explains the argument; links let `gram_relations` answer "why do we bel
 - Everyone who can read the destination can read every record and revision. Write what that audience may see: claims at the abstraction the purpose needs, sources cited by neutral title and identifier. Material with a narrower audience (direct messages, private mail, personal conversations, restricted repositories) enters a shared vault only when the request makes that disclosure intended; otherwise leave the claim out and record a nonsensitive coverage gap. Never store secrets, credentials, tokens in URLs, third parties' personal data or raw message bodies.
 - Never invent owners, stewards, approvers or due dates; set `owner` only as a source or the person states it.
 - An AI recommendation stays a `proposed` decision until the person, or a source recording someone's acceptance, accepts it. An inferred claim stays `basis:inferred` until evidence is inspected.
-- Comments are reviewer input. When `gram_comments` is exposed, read the open threads before rewriting the sections they anchor, investigate them like any lead and keep them coherent with the new text. Open a thread with `gram_comment` only when the person asks for review requests, and never resolve a thread someone else opened.
+- Comments are reviewer input. When `vault_comments` is exposed, read the open threads before rewriting the sections they anchor, investigate them like any lead and keep them coherent with the new text. Open a thread with `vault_comment` only when the person asks for review requests, and never resolve a thread someone else opened.
 - Corrections keep the audit trail (section 7). Never remove a once-true record or rewrite prose to hide an earlier mistake.
 
 ## 7. Currency, corrections and re-verification
@@ -93,7 +93,7 @@ Each conclusion in prose mentions its record (`[label](@id)`) where the reader m
 
 ## 9. Logic audit before reporting completion
 
-Run this on the saved document (records with `gram_list`/`gram_context`, edges with `gram_relations`) together with writing.md section 7, and fix failures before reporting:
+Run this on the saved document (records with `vault_browse {path, select}` and `vault_read`, edges with `vault_read {refs, relations}`) together with writing.md section 7, and fix failures before reporting:
 
 1. Each conclusion in the body has a claim record mentioned in place; each claim is reachable from the root and explained or placed in the body.
 2. Each claim-bearing record has exactly one basis tag; observed and reported claims cite sources; inferred claims have `supports` from their premises.
@@ -101,7 +101,7 @@ Run this on the saved document (records with `gram_list`/`gram_context`, edges w
 4. Known counterevidence and open questions appear in both prose and records.
 5. Decisions are `accepted` only on recorded acceptance; each risk names its mechanism.
 6. One source per locator and one claim per proposition.
-7. A natural "why" question finds the claim through `gram_recall`, and `gram_relations` shows its supporting chain.
+7. A natural "why" question finds the claim through `vault_search`, and `vault_read` with `relations` shows its supporting chain.
 
 Report the audit in a sentence or two (claims, basis mix, reasoning links, open contradictions and questions). Never add links or tags only to pass it.
 

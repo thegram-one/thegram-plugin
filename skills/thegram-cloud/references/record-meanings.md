@@ -1,6 +1,6 @@
 # Record meanings: the 22 types
 
-Every Thegram document uses one vocabulary, `gram@1`, with 22 record types. Fields, statuses and supported operations follow Core's meaning catalog and the live `gram_profile {topic:"templates"}`. This skill narrows authoring selection for the current reading surface: although Core's broad `knowledge` category can include activity reports, do not use it as a fallback for past-only occurrences or outputs. Preserve those as dated events, actual artifacts, history or source material; reserve `knowledge` for the useful proposition itself.
+Every Thegram document uses one vocabulary, `gram@1`, with 22 record types. Fields, statuses and supported operations follow Core's meaning catalog and the live `vault_guide {topic:"templates"}`. This skill narrows authoring selection for the current reading surface: although Core's broad `knowledge` category can include activity reports, do not use it as a fallback for past-only occurrences or outputs. Preserve those as dated events, actual artifacts, history or source material; reserve `knowledge` for the useful proposition itself.
 
 Type names, field keys, status values, predicates, IDs and tag keys stay exactly as written here. Titles (`t`), descriptions (`d`), body text and tag values a person reads are written in the person's language.
 

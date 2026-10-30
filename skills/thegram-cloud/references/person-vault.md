@@ -8,7 +8,7 @@ Use the name the person goes by on this host: the account or profile name you kn
 
 ## The root
 
-1. Call `gram_projects`. It lists every vault this assistant may write, personal and team alike, without saying which is which, so only the vaults below count as personal.
+1. Call `vault_browse`. It lists every vault this assistant may write, personal and team alike, without saying which is which (its `label`, `owner` and `org` help tell them apart), so only the vaults below count as personal.
 2. The vault the person names in this request ("put it in Team Research") → a folder named after the person in it, `@mounts/<vault-id>/<name>`, reused when it exists. Naming a vault is the only way a team or shared vault is chosen. An established document for the same subject elsewhere in that vault is continued at its own path instead.
 3. Otherwise continue an existing personal root: a folder named after the person, or an exact-name vault, whose existing subject documents, owner record or earlier run destination establishes it as the person's root. A previously authorized root in a named shared vault remains valid. If several roots match, prefer the one containing the established document for this subject; otherwise use the personal-vault rules below rather than an unrelated root. Never select an arbitrary team vault merely because it contains a similarly named folder.
 4. A writable vault whose `name` equals the person's name (same trim and NFC, character-exact) → the root is that vault: `@mounts/<vault-id>`.
@@ -21,7 +21,7 @@ Assistants cannot create vaults themselves; the server refuses it.
 
 ## One document per purpose
 
-An explicitly named or established document keeps its exact path. Otherwise inspect the resolved root and its folders with `gram_list` and relevant recall before creating anything; a moved, renamed or older-format document is continued, not recreated.
+An explicitly named or established document keeps its exact path. Otherwise inspect the resolved root and its folders with `vault_browse {path}` and a relevant `vault_search` before creating anything; a moved, renamed or older-format document is continued, not recreated.
 
 | Path | Use |
 |---|---|
