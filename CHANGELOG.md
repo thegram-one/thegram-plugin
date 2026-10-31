@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Add `.agents/plugins/marketplace.json` so the repository is a Codex marketplace: `codex plugin marketplace add thegram-one/thegram-plugin`, then `codex plugin add thegram-cloud@thegram-cloud`. The plugin, skill, MCP server, OAuth configuration and ZIP packages are unchanged, so this needs no new version.
+- README: add the Codex install steps and how a Codex API key replaces the plugin's OAuth server.
+
 ## 4.5.0 — 2026-10-31
 
 - Replace the bundled skill with one short `SKILL.md` and drop the ten references. One method reads every vault and shared GramHub dataset: browse once for scope, search inside a folder, copy tags from a hit, narrow with `tag`, dates, `terms`, `group_by` and `order` (`-at` newest first, `at` oldest first), read the metadata of every answer, and open records before quoting them. The skill holds no recipe for a particular dataset; a dataset that does not fit the method is fixed in how it is stored.
