@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.5.0 — 2026-10-31
+
+- Replace the bundled skill with one short `SKILL.md` and drop the ten references. One method reads every vault and shared GramHub dataset: browse once for scope, search inside a folder, copy tags from a hit, narrow with `tag`, dates, `terms`, `group_by` and `order` (`-at` newest first, `at` oldest first), read the metadata of every answer, and open records before quoting them. The skill holds no recipe for a particular dataset; a dataset that does not fit the method is fixed in how it is stored.
+- Record shapes, templates and write rules come from `vault_guide` and the tool schemas. The skill keeps only what a first write gets wrong: the record types, `x` values, id and link rules, the `request_id` and `sync.state` loop, the `edit-text` append for a new section, and the error table.
+- Coding agents use the same plugin and endpoint with an API key bearer header (`claude mcp add --transport http … --header`, `codex mcp add … --bearer-token-env-var`, `opencode mcp add … --header`). The separate `thegram-memory` plugin is retired.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged; only versions, release notes and the skill change. Needs vaultd with `order` and title and tag ranking (thegram-one/thegram-vault#280) and the GramHub kind tags; rescan the MCP server on the plugin page.
+
 ## 4.4.3 — 2026-10-30
 
 - Move the bundled skill, references and review cases from the 18 `gram_*` tools to the 13 `vault_*` tools the server now lists: `vault_guide`, `vault_search`, `vault_read`, `vault_browse`, `vault_changes`, `vault_comments`, `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`.

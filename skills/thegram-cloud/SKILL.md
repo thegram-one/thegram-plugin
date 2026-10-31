@@ -1,116 +1,96 @@
 ---
 name: thegram-cloud
-description: Build and maintain enterprise-grade, source-backed knowledge in Thegram .gram documents with vault_* tools. Research any subject, project, organization or plan across the connected sources the request covers (repositories, documents, chats, mail, calendars, the web) with an evidence-driven task plan, and write one deeply explained document per subject whose claims, evidence, decisions, risks and supporting or contradicting reasoning are typed records with pinned provenance, a verification basis and revision history. Update the same document incrementally without duplicates, keep observed facts, reported claims and inferences distinct, respect destination and audience boundaries, verify storage, logic and retrieval, and report blocked work as partial. Also answers from saved knowledge and handles schedules, scheduled automations, agent work, dashboards and historical backfills.
+description: Read and write Thegram memory with the vault_* tools. One method answers from the person's vaults and from every GramHub shared dataset with the right scope and filters, and, when the person asks to save, records facts as typed records in the right .gram document without write errors.
 ---
 
-# Thegram knowledge
+# Thegram
 
-Use the current connection's `vault_*` tools, including host-prefixed names: reads `vault_guide`, `vault_search`, `vault_read`, `vault_browse`, `vault_changes`, `vault_comments`; writes `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`. ChatGPT and Claude connect to `https://vault.thegram.one/mcp` with OAuth; coding agents use scoped API keys against the same endpoint, with the same tools, records and rules. Authentication, injected session context and reminders belong to the host adapter. Never install a desktop app, expose a local-only folder or switch credentials to get around a denial.
+Tools (host prefixes allowed): reads `vault_browse`, `vault_search`, `vault_read`, `vault_changes`, `vault_comments`, `vault_guide`; writes `vault_create`, `vault_edit`, `vault_delete`, `vault_restore`, `vault_move`, `vault_comment`, `vault_feedback`. A ref is `@mounts/<vault>/<folder>/<doc>.gram`, a record `…gram#<id>`, a section `…gram§<heading>`; use refs exactly as tools return them. Answer in the person's language and cite `path#id`.
 
-These instructions are English; answers, progress, titles, headings and record `t`/`d` follow the person's current language. Keep proper names, quotations and technical identifiers as written.
+## 1. Scope first
 
-## 1. Rules that always apply
+Call `vault_browse {}` once per conversation unless the person gave a ref. Each row has `ref`, `label`, `access` and top `folders`.
 
-1. **Authorization.** Saving needs authorization for the purpose and the destination, not merely a writable connection. Retrieval, review, analysis and drafts stay read-only unless storing the result is requested; read-only and "do not save" requests create no records or run receipts. An established project-execution policy can authorize durable outcomes within that project; connector access alone cannot.
-2. **Destination.** Write to the document the person names or the established document for the subject. Otherwise resolve the destination with [person-vault.md](references/person-vault.md): a vault the person names holds new documents in the person's folder there, and without one the person's own storage is used; a team vault is never chosen by itself. Use exact vault refs from `vault_browse`, never display names, and never switch mounts after a failure. `vault_browse` lists only this agent's grants: on `AGENT_SCOPE_DENIED` stop, point the person to Thegram Settings → Connected agents, and rediscover mounts after they change access.
-3. **Evidence.** Every stored claim traces to inspected sources or to named premises, with how it is known ([knowledge-model.md](references/knowledge-model.md)). Never fabricate facts, statuses, dates, owners, events, completions or revisions; an AI recommendation stays a `proposed` decision.
-4. **One subject, one document.** Reuse the established document, its path and its record IDs; update in place and never duplicate a document, source or claim. Change a record's status instead of removing it; revisions keep the history.
-5. **Write safety.** One coherent unit per `vault_edit`; `set`/`unset` carry the `old` value read; replacing a section needs `base_revision`/`expected_hash` from the same `source:true` read; one `request_id` per intended change, reused only to retry that change. A write landed only when the answer shows `sync.state: synced` and a fresh read confirms it.
-6. **Privacy.** Store structured, sourced knowledge for the purpose only: never transcripts, message bodies, attachments, secrets, credentials, account numbers or unrelated third-party details. Respect the destination's audience (knowledge-model.md section 6).
-7. **Completion.** Storage success, task completion and completion of the investigation are different. Finish reachable authorized work in the same execution; a genuine limit yields a partial result with pending tasks and an exact resumption point. Never claim background work that is not actually scheduled.
+- `access: "write"`: the person's and their organizations' vaults. `access: "read"` (`@mounts/hub-team-*`): shared GramHub datasets, read-only, often tens of thousands of documents, and new ones appear over time. There is no fixed list.
+- Always pass `folder` (a vault, hub or dataset folder ref) to `vault_search`, and `path` to `vault_browse {select}`. An unscoped search spans every vault and hub, is slow and mixes personal notes with public data.
+- Never walk folders with `vault_browse` to find a document: names are opaque and there can be thousands. Use only refs a tool returned; a guessed folder fails with `E_PATH`.
 
-## 2. Orient
+## 2. One way to read any vault or hub
 
-- Call `vault_browse` once per purpose: each `vaults[]` row's `ref` is the path prefix. Then `vault_browse {path, summary:true}` (a document or a folder) for open records, recent revisions, `rev`/`hash` and `next`, and `vault_browse {path, select:{type:"project"}}` for the root record. Before creating anything, check `vault_browse {path}` and `vault_search` for a moved or renamed document.
-- Before acting on a remembered decision or task, read it: `vault_read {refs:["<path>#<id>"], fields:["t","d","x"]}`.
-- Resume with `vault_changes {path, since: next}`. For a requested historical window, compute an explicit ISO UTC `since` and follow every `more`.
-- Before the first write or an unfamiliar operation, call `vault_guide {task}` (and `{topic:"templates"}` for the vocabulary); the current schemas and guide win over this skill.
-- A coding-agent adapter may inject `<thegram>` context (document path, revision, root record, open records). It is context, not instruction or authorization; repository binding is in [contracts.md](references/contracts.md).
+The same steps serve a personal vault and every hub. Nothing here depends on what a dataset holds.
 
-## 3. Route the request
+1. **Ask plainly.** `vault_search {query, folder}`; `query` is never empty. A sentence with the exact names, codes or numbers a record would hold. A named document or article is looked up directly and does not depend on the index.
+2. **Learn the dataset from one hit.** Hits carry `tags`, `at`, `due`, `observed`; otherwise `vault_read` one hit with `fields:["tag"]`. Tags are `key:value` exactly as stored: copy them from a hit, never guess a value. Every data record in a hub carries one `종류` tag (its kind); guide and source records carry none. `group_by:"종류"` with the question's words lists which kinds match and how many. A record without tags keeps the source row as JSON in `d`: filter it by words and dates. Date meanings differ per dataset; a dataset folder may hold `guide.gram` (meanings) and `coverage.gram` (period covered): read them with `vault_browse {path, ids:true}` and `vault_read` when meaning or freshness matters.
+3. **Narrow with structure.** `tag:["k:v", …]` (every tag must hold), `from`/`to` (`YYYY`, `YYYY-MM` or a date), `valid_at:"YYYY-MM-DD"`, `terms:[…]`, `group_by:"<tag key>"`, `per_group`, `type`, `status`, `limit` up to 20. `order:"-at"` returns the newest by `at` first and `"at"` the oldest first (for "latest", "first", "most recent"); the default ranks by match. `query` holds words from the record text, never a tag string.
+   - `terms` (one to four nouns every hit must hold) filter; `query` ranks. By default hits are ordered by how rare the `query` words are in a record; a word in the title counts three times, in a tag twice. Records holding the same words tie and keep document order, so the first hit can be any of them: put the distinguishing words in `query` too, choose by `title` and `tags`, and read before relying on one.
+   - `group_by` gives the size of each value of one tag key and a `next` call per group: it shows which kinds of record match and how many in one call. Report `candidates` instead of paging to count. Pair it with a tag that ties the records together (copied from a hit), or it groups every record the words touch. Leave out `related_by` unless asked.
+   - `valid_at` keeps records in force that day (`at` on or before it, `due` empty or after it). A later date returns what is scheduled; a date before the earliest stored record returns 0 candidates: say older records are not stored, and never present current text as valid on that day.
+4. **Read the answer's metadata every time.**
+   - `note` with `INDEX_PENDING`, or `coverage.files_pending` > 0: those documents are left out. Say the result is partial; for a lookup, ask again without filters, or later. `E_INDEXING`: nothing indexed yet, same remedy.
+   - `mode:"keyword"` with `reason:"WIDE_SCOPE_KEYWORD"`: a filtered wide search ranks by matching words, not meaning. Use the dataset's own words and check `matched` and `gaps`.
+   - `omitted` with `PAGE_LIMIT`, or `more`: call `next.tool` with `next.args` exactly; never build a cursor. Page only when the question needs every match (counts, lists, rankings) and say where you stopped.
+   - `relevance:"weak"`: the hits are only nearby; say the dataset may not hold the answer.
+   - `E_SCOPE_TOO_WIDE`: `as_of` and date fields other than `at`, `due`, `observed` need a small scope; pick a folder from `candidates` or name `documents`.
+5. **Open before quoting.** A hit's `summary` is cut short (for row datasets it is only the date). Call `vault_read {refs:[…]}` once with every ref you need (up to 16, `fields:["t","d","at","due"]`). Name the dataset, the ref and the record's date; hub data is a published snapshot, not live.
+6. **Conclude carefully.** Never answer "none found" from one empty or odd result: change the words or a tag spelling once. A kind absent from `groups` holds no record with all the `terms`: say so for those words. A result you already have that returned the kind still counts: check it first. Stop when the question is answered; page further only when asked.
+7. Hubs are never a write destination. Do not copy hub records into the person's vault unless asked.
 
-Read the listed references before acting; each is one step from here.
+## 3. More reads of one document
 
-| Request | Read |
+- Links of one record: `vault_read {refs, relations:{direction:"both"}}`.
+- State: `vault_browse {path, summary:true}` gives open records, `rev`, `hash` and `next`; later `vault_changes {path, since: next}` gives only what changed.
+- All record ids: `vault_browse {path, ids:true}`, then `vault_read` the ids you need.
+- Lists: `vault_browse {path, select:{type, status, tag, from, to}}`.
+
+## 4. Writing, only when the person asks to save
+
+A writable connection is not permission: save only what the person asked, where they asked or where the subject already lives. Never switch to another vault after a refusal.
+
+Every write:
+
+1. Read the records you will change (`vault_read`, `fields:["t","d","x"]`). `set` and `unset` carry `old`, the exact value read (`null` when empty).
+2. Send one `vault_edit {path, request_id, operations}` per coherent change, with a new stable `request_id` per intended change. Reuse a `request_id` only to repeat the same call.
+3. While the answer says `sync.state: "queued"`, repeat the identical call; it usually settles within 5–20 seconds. The write landed only at `"synced"`: then `vault_read` the changed records.
+
+Records:
+
+- `type` is one of: project goal requirement assumption decision task blocker risk event artifact evidence metric component system service source history knowledge context person agent run. Any other word, `note` included, fails (with a misleading `E_DUPLICATE_FIELD`).
+- Every record needs `t`, a short title, never a date or id. Field values are arrays: `{"t":["…"],"d":["…"]}`; `d` is one self-contained sentence of the outcome.
+- `x` values: task backlog, open, active, review, blocked, waiting, completed, cancelled, archived; goal open, active, completed, cancelled, archived; project planning, active, at-risk, on-hold, completed, cancelled, archived; decision proposed, accepted, rejected, superseded; risk open, mitigated, resolved, accepted, closed. These five types require `x`. An event requires `at` (ISO date or time; `x` confirmed, tentative, cancelled), a metric `value` and `unit`, an artifact `ref`.
+- `id`: lowercase letters, digits and `-` with a type prefix (`task-…`, `dec-…`, `risk-…`); no dots, spaces or dates.
+- Links: `[["part-of","prj-x"]]` with part-of, implements, depends, derives, related, supports, contradicts, replaces, blocks, enables. The target must exist or be added earlier in the same call.
+- A status change is `set x` with `old`, never a new record. A full replacement sets the old record `superseded` and links `replaces` from the new one. Never remove a record that was true.
+- `ref` is one URL others can open, never a local path; `source` holds `source` record ids.
+
+Operations:
+
+- add: `{"op":"add","record":{"type":"task","id":"task-x","fields":{"t":["…"],"x":["open"]},"links":[["part-of","prj-y"]]},"place":{"section":"<existing heading>"}}`. `place` may also be `{"after":"<id>"}` or `"end"`; the section must already exist.
+- set: `{"op":"set","entity":"task-x","key":"x","value":"completed","old":"active"}`
+- prose: `{"op":"edit-text","entity":"doc","kind":"rich","old":"<exact text occurring once>","new":"…"}`. Never in the same call as an `add` with `place`; add records first, edit prose in the next call.
+- New section, or a change to the last section: `edit-text` anchored on the last line of the body, e.g. `"old":"[[last-id]]"`, `"new":"[[last-id]]\n\n# Heading\n\nText"`. The `section` op works only on an existing section that is not the last, with `base_revision` and `expected_hash` from `vault_read {refs:["<path>§<heading>"], source:true}`. A source read of the last section ends with internal `@ids` lines: never copy them into new text.
+- remove, and replacing the whole body, need `base_revision` and `expected_hash` (the `rev` and `hash` of `vault_browse {path, summary:true}`).
+
+New document: first check that none on the subject exists. Then `vault_create {path, title, base_revision:null, request_id, content:{text, records}}` with a short ASCII slug filename in an existing writable folder, headings in `text` and each record's `[[id]]` alone on a line where it should appear.
+
+## 5. Errors: fix the cause, never resend unchanged
+
+| code | fix |
 |---|---|
-| Research, write, explain or update a subject, project, organization or plan | [writing.md](references/writing.md), [knowledge-model.md](references/knowledge-model.md), [record-meanings.md](references/record-meanings.md) |
-| Answer from saved knowledge | section 7 here; knowledge-model.md section 3 for "why" questions |
-| Change a status or a few fields | [record-meanings.md](references/record-meanings.md) (statuses, closing a record) |
-| First write, section edits, body syntax, error codes, coding-repository binding | [contracts.md](references/contracts.md) |
-| Ambiguous classification or a worked write sequence | [examples.md](references/examples.md) |
-| Personal writing without an established document | [person-vault.md](references/person-vault.md) |
-| Schedule, commitments and deadlines | [schedule.md](references/schedule.md) with writing.md |
-| A scheduled automation run, or work an agent does for the person | [automations.md](references/automations.md) |
-| Dashboards and widgets | [widget-data.md](references/widget-data.md) |
-| Authorized import or reconstruction of history | [backfill.md](references/backfill.md) with writing.md |
+| `E_PRECONDITION` | `details.conditions` shows the actual value or the missing anchor: reread, decide, resend with a new `request_id` |
+| `E_TEMPLATE` | `details.diagnostics` names the record, field and allowed values |
+| `E_ARGUMENT` | missing `old`, `place` mixed with a body edit, or a wrong shape |
+| `E_SYNTAX` | an id, link target or field key holds a bad character, usually a dot |
+| `E_MISSING_TARGET` | add the link target first, in the same call |
+| `E_AMBIGUOUS_TEXT` | `old` must occur exactly once: copy a longer exact span from a `source:true` read |
+| `E_CAS_REQUIRED` | add `base_revision` and `expected_hash` from a fresh summary |
+| `E_REQUEST_REUSE` | that `request_id` carried different content: use a new one |
+| `E_RICH` "Invalid @ids line" | a `section` op reached the end of the body: use the `edit-text` append above |
+| `E_LONG_PARAGRAPH` | a paragraph would pass 1,000 characters: put new detail in its own paragraph |
+| `STALE_CURSOR` | the documents changed: rerun from the first page |
+| `AGENT_SCOPE_DENIED`, `E_READ_ONLY`, `E_FORBIDDEN`, `E_PATH` | stop and tell the person (Thegram Settings → Connected agents); never write elsewhere |
 
-A timeline, journal or log the person asks for is an ordinary subject document written with the same method; chronology then shapes its sections. An explicitly quick or narrowly scoped request keeps its scope without an expansive research run; identity, evidence and concurrency rules still apply.
+A write answer may carry `decision_analysis` suggestions. They are never applied and need no action.
 
-## 4. Research and write loop
+## 6. Report
 
-For substantial work (writing.md has the full method):
-
-1. Resolve the destination and read the existing document: brief, outline, root, research tasks, latest run and scope sources.
-2. Plan assistant-owned research tasks (`research-work`) with questions, source scope and acceptance evidence; save them with the first useful unit.
-3. Repeat bounded units: read one source unit completely; classify its atomic facts by meaning (record-meanings.md); tag each claim's basis and link its reasoning (knowledge-model.md); write the unit's sources, claims, links and explanation together; checkpoint tasks, run and scope.
-4. When understanding changes, rewrite the affected sections and records; never append a contradicting update.
-5. Audit with writing.md section 7 and knowledge-model.md section 9, verify with section 9 here, then report.
-
-## 5. Records
-
-- A commit, PR, thread, file or chat is a source container, not a record type; one item may yield several facts or only source coverage. Classify each fact by meaning, one fact per record.
-- `t` is a concise proposition or name, never a time or ID. `d` is self-contained: subject, scope, conditions, exceptions, uncertainty and provenance, without copying the source.
-- IDs are stable slugs with a type prefix (`k-`, `dec-`, `task-`, `risk-`, `evd-`, `src-`, `m-`, `ev-`) using lower-case ASCII letters, digits and hyphens. Source IDs come from the item's identity; run and request IDs from the actual execution.
-- `source` holds `source` record IDs; `ref` holds one URL others can open, never a local path or `file://` URL.
-- Time: an event's `at` is when it happened, at its known precision; a commit date proves only the commit time. Source dates stay in their fields and recording time is the server's. Use `effective_at` only as writing.md section 5 describes.
-- No event per commit, task per session, or record made to fill a widget; dashboards count stored records ([widget-data.md](references/widget-data.md)).
-
-## 6. One coherent unit, one patch
-
-Save an item's source, the claims it establishes, their links and the affected prose in one `vault_edit` against the head. Operations run in order, so add a record before another links to it. A record appears in the body only with `place` or a standalone `[[id]]`.
-
-```json
-{"path": "@mounts/<vault-id>/<root>/<subject>.gram", "request_id": "run-20261027-u03",
- "operations": [
-  {"op": "add", "record": {"type": "source", "id": "src-core-patch-rs",
-    "fields": {"t": ["core/src/patch.rs"], "d": ["Read lines 40-180 at commit <full-sha>: base revision and hash checks before operations apply."],
-      "ref": ["https://github.com/<owner>/<repo>/blob/<full-sha>/core/src/patch.rs"], "tag": ["source:github"]},
-    "links": [["part-of", "prj-format"]]}, "place": "none"},
-  {"op": "add", "record": {"type": "knowledge", "id": "k-no-lost-update",
-    "fields": {"t": ["Concurrent section edits cannot silently overwrite each other"], "d": ["Inferred from the stale-base check; covers writes through Core only, not files edited outside Thegram."], "tag": ["basis:inferred"]},
-    "links": [["part-of", "prj-format"]]}, "place": {"section": "Write guarantees"}},
-  {"op": "add", "record": {"type": "knowledge", "id": "k-stale-base-rejected",
-    "fields": {"t": ["Core rejects a patch whose base revision is stale"], "d": ["As of <full-sha>: a patch with base_revision/expected_hash fails with STALE_REVISION once the document has moved on."],
-      "source": ["src-core-patch-rs"], "tag": ["basis:observed"]},
-    "links": [["part-of", "prj-format"], ["supports", "k-no-lost-update"]]}, "place": "none"},
-  {"op": "set", "entity": "task-research-writes", "key": "x", "value": "active", "old": "open"}
- ]}
-```
-
-- `add` field values are arrays; `t`, `d`, `x`, `at` and `ref` hold one value, while `tag` and `source` repeat. `set` takes `value` or `values` plus `old`.
-- Keep a call under about 20 sources, 60 operations and 8,000 characters; split at a semantic boundary.
-- Section replacement, `edit-text`, mentions, collections and every error code are in [contracts.md](references/contracts.md).
-
-## 7. Read and answer
-
-- Find with `vault_search {query, folder}` in a plain sentence; retry once with other wording before concluding nothing is recorded. The answer already holds the text of the best matches: open the rest with `vault_read {refs:["<path>#<id>"]}`, sections with `vault_read {refs:["<path>§<heading>"]}` and neighbours with `vault_read {refs:["<path>#<id>"], relations:{direction:"both"}}`. Narrow by `type`, `status`, `from`/`to`/`date` or `scope` (name a `folder` or `documents` with them); `relevance: "weak"` means the hits are only the nearest records. A first page that stops with `LOW_RELEVANCE` already holds the strong matches; follow `cursor` with the same arguments only when the question needs every match.
-- When the person asks what an earlier answer relied on, keep that search's `receipt` and run `vault_search {receipt}`: it shows whether the same records come back from the documents as they were then.
-- For "why" questions follow `supports`/`contradicts` with `relations` and give each step's basis; say when a reason is not recorded instead of inventing one.
-- Past states: `as_of:{revision | effective_at | recorded_at}` on `vault_read`, and on `vault_browse {path, ids:true}`; `vault_changes` lists what changed.
-- Answers cite `path#id` or the section, keep observed, reported and inferred claims distinct, and write nothing.
-
-## 8. Errors
-
-Fix the named cause and retry only within the original scope; [contracts.md](references/contracts.md) lists every code. `E_PRECONDITION`: reread the fields, keep concurrent edits and resend with a new `request_id`. `STALE_REVISION`, `HASH_MISMATCH`, `E_CAS_REQUIRED`: reread the section and reconcile before resending with that read's tokens. A lost answer: retry the identical request with the same ID. `AGENT_SCOPE_DENIED`, `E_READ_ONLY`, `E_FORBIDDEN`, `E_PATH`: stop and report; never switch destination.
-
-## 9. Verify, stop check and report
-
-After creating a document, adding substantial knowledge or changing an important decision or policy, verify retrieval as well as storage:
-
-1. Ask one or two natural questions a person would ask later, not a copied title or ID, with `vault_search` in the folder where the material should be found.
-2. Open the returned record or section and check that it answers with the right subject, scope and conditions. A matching title or score alone is not proof.
-3. If it is not found, clarify only missing source-backed subject or conditions in `t`/`d` or the section and retry once with other wording; otherwise report "saved and read back; retrieval not verified" with the question and the limitation. Never keyword-stuff or add duplicate records to chase rank.
-
-Coding-agent reminders and stop hooks do not authorize writes or change this workflow; never write filler to satisfy them. Before finishing, reconcile active tasks with reality: unfinished queued work returns to `open` with its next action.
-
-Report the document path and revision, what the document now explains, material additions and corrections, task outcomes, inspected scope and gaps, and the logic-audit summary. Report storage, readback, retrieval and rendered UI separately, naming the questions and `path#id` actually checked.
+Name the refs you relied on. For a write, give the document path, the new revision and the changed record ids after the readback. Say plainly what was partial: index pending, pages left unread, weak relevance.

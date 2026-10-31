@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "thegram-cloud",
-  "version": "4.4.3",
+  "version": "4.5.0",
   "description": "One purpose, one structured .gram file: shared memory for people and AI, with source-grounded information, decisions, relationships and change history. Use authorized Thegram Cloud vaults or separately connected Google Drive destinations.",
   "author": {
     "name": "Roy Kim",
@@ -106,7 +106,7 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "4.4.3: Moves the bundled thegram-cloud skill and its review test cases to the 13 vault_* tools (vault_guide, vault_search, vault_read, vault_browse, vault_changes, vault_comments, vault_create, vault_edit, vault_comment, vault_feedback, vault_move, vault_delete, vault_restore). vault_search keeps the ranked recall's filters (type, status, dates, scope), its receipt (vault_search with a receipt re-runs it against the documents as they were) and LOW_RELEVANCE guidance; vault_browse lists records by type and status; vault_read follows a record's links with relations. Preserves the published plugin identity, MCP configuration and skill namespace.",
+        "release_notes": "4.5.0: Replaces the bundled thegram-cloud skill with one short file and no references. One method reads every vault and shared GramHub dataset: scope first, vault_search with a folder, tags copied from a hit, group_by for the kinds of record, order for newest or oldest, and open before quoting; it writes only what the person asks to save. Record shapes and write rules come from vault_guide and the tool schemas. Coding agents use the same plugin and endpoint with an API key bearer header. Preserves the published plugin identity, MCP configuration and skill namespace.",
         "translations": {
           "ko-KR": {
             "subtitle": "목적별 .gram 하나, 사람과 AI의 기억",
