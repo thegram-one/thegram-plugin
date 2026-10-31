@@ -1,21 +1,11 @@
 {
   "source": {
-    "archive": "thegram-cloud-4.4.3.zip",
-    "sha256": "3554fbae14862445c001334383f2e0b2f33bd342cf48caa8ebc960bb5262e047",
-    "version": "4.4.3",
+    "archive": "thegram-cloud-4.5.0.zip",
+    "sha256": "cf65bf03b6bc5df44184dc4d91f7d38254a0f57ff6a3bed7023a192d7bc18be3",
+    "version": "4.5.0",
     "path": "skills/thegram-cloud"
   },
   "files": {
-    "SKILL.md": "0a6563fb691719d9a50b9f19c0268d138b587a26524ad1cab377115effa126c8",
-    "references/automations.md": "f2f4bc6765d1b50e76822f6533314db4ef6df8715c01711b81e734693631cb89",
-    "references/backfill.md": "5649d23aeab7e784d86d62f24ba244b90e404e28915b52e69a1f5c51dab5a48c",
-    "references/contracts.md": "4e32d0620c19c8652a2325deb81e65f787478fa52a0bc30d1e063262b23a3f2e",
-    "references/examples.md": "c45300c9641828d6f0a6f1e90f3f56c77ef9ab2884b064ea08b43f57a37e0d4e",
-    "references/knowledge-model.md": "16569e40915f9401bc672f2b181f5f2ea52af0a9f3ffe4be9894458c05eb125c",
-    "references/person-vault.md": "80ae9e0936990c75e9ae0091742bc92e5615a5a433dce532ae123a4d2e7df42e",
-    "references/record-meanings.md": "3cfd7054b7441a97df8297a9cba3b8eb202dce42e4b941043d1754a81ea1acd7",
-    "references/schedule.md": "2622cc410624a4a3f6413fb167aea01bde1a4624f779d5855822ec9e79131c5c",
-    "references/widget-data.md": "2f8e2b6cce5f0716ba3fc36ab95428d682eb89365e027226d642a3167a838ce6",
-    "references/writing.md": "6e82a1d12e345736d0f4d187b7a002fe0f4b5f728bfc4bbd9fcc101d6b46e961"
+    "SKILL.md": "ed97ba00c127c75ac8cacc98dc50314fbca671cc659912558c89455662c0b0f3"
   }
 }
