@@ -16,6 +16,20 @@ For Claude Code, this repository is also a marketplace:
 
 The skill is available as `/thegram-cloud:thegram-cloud` on surfaces that expose namespaced plugin skills. Describe your task normally to let Claude select it instead. The plugin uses remote MCP and OAuth; it does not need a running Thegram desktop app or an API key pasted into the package.
 
+## Install on Codex
+
+This repository is also a Codex marketplace (`.agents/plugins/marketplace.json`). In the Codex CLI:
+
+```sh
+codex plugin marketplace add thegram-one/thegram-plugin
+codex plugin add thegram-cloud@thegram-cloud
+codex mcp login thegram
+```
+
+The plugin brings the skill (`thegram-cloud:thegram-cloud`) and the remote `thegram` MCP server; `codex mcp login thegram` signs in with your Thegram account through OAuth in the browser. Installing the plugin alone does not authorize access to your data. In the Codex app, add the same marketplace from the Plugins directory. Update with `codex plugin marketplace upgrade thegram-cloud`.
+
+To use an API key instead of OAuth, see **Coding agents**.
+
 ## Coding agents
 
 Coding agents use the same skill and the same endpoint; only the sign-in differs. In https://vault.thegram.one/ open **Settings → Agents → API keys**, create a named key for the vault it needs with only the permissions required, and copy the secret once into a secret environment variable `THEGRAM_API_KEY`. Then add the server with a bearer header:
@@ -27,6 +41,8 @@ opencode mcp add thegram --url https://vault.thegram.one/mcp --header Authorizat
 ```
 
 The key carries its own access scope, so a vault it was not granted is denied with `AGENT_SCOPE_DENIED`. Never paste the key into a conversation, a repository or a package. `--header` takes the value as a command argument, so run those two commands yourself in a shell whose history and logs are private; Codex reads the key from the environment and needs no argument. The bundled skill is the same file for every host.
+
+With Codex, install the plugin as above for the skill, then run the `codex mcp add` line. A user-level server named `thegram` replaces the plugin's own server of that name, so there is one `thegram` server that sends the bearer key and no OAuth sign-in. Codex does not send an `Authorization` header declared in a plugin's `mcp.json`, so the key is never bundled in the package.
 
 ## Public directory submission
 
