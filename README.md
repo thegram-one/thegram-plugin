@@ -1,8 +1,8 @@
 # Thegram Cloud
 
-Thegram is shared, structured memory for people and AI assistants. This plugin pairs the Thegram remote MCP connector with one memory skill. Ask Claude or another supported host to find an earlier decision, retrieve a project's current constraints, or save an explicitly authorized outcome with its sources. Plans, notes, ideas, tasks and knowledge stay in structured `.gram` files rather than disconnected conversation transcripts.
+Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI, ChatGPT and Claude read as one record. Every answer can end with the documents it rests on, and every change is kept as history. This plugin pairs the Thegram remote MCP connector with one skill: ask Claude or another supported host to find an earlier decision, list the open risks of a project, count records exactly, or save an explicitly authorized outcome as a typed record with its sources.
 
-Version 4.5.0 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the 13-tool surface (`vault_guide`, `vault_search`, `vault_read`, `vault_browse`, `vault_changes`, `vault_comments`, `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`). The skill is one short file with no references: one method reads every vault and shared GramHub dataset (scope first, `vault_search` with a folder, tags copied from a hit, `group_by:"종류"` for the kinds, `order` for newest or oldest, open before quoting), and writes only what the person asks to save. Record shapes and write rules come from `vault_guide` and the tool schemas, so the skill carries no recipe for a particular dataset.
+Version 4.6.0 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the 14-tool surface (`vault_guide`, `vault_browse`, `vault_search`, `vault_exact`, `vault_read`, `vault_changes`, `vault_comments`, `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`). The skill is one file with no references. It reads every vault and shared GramHub dataset with one method (scope first, then the record type, status and date the question implies, open before quoting, `vault_exact` for counts and rankings), and writes only what the person asks to save. A table of the 22 record types tells Claude which type each fact belongs to, so reads filter on the right type and writes pass Core's template checks. Record shapes and write rules come from `vault_guide`, which the skill asks Claude to call before its first write.
 
 ## Install on Claude
 
@@ -78,12 +78,12 @@ No local MCP command, lifecycle hook or automatic package installation is declar
 
 ## Shared workflow provenance
 
-The cloud skill comes from the validated public `thegram-cloud-4.5.0.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file. This replaces the obsolete `skills/thegram-memory` commit pin; the release does not pretend that uncommitted workflow edits came from an older source commit.
+The cloud skill is written in the shared skill source (`thegram-skill`, `skills/thegram-cloud/SKILL.md`) and enters this repository only through the validated public `thegram-cloud-4.6.0.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file.
 
 To import a later validated public release without changing the cloud skill identity:
 
 ```sh
-python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.5.0.zip
+python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.6.0.zip
 ```
 
 The importer validates the archive before writing, replaces only its owned skill tree and updates the lock. Do not edit the generated skill independently. Keep `plugin.json`, `.claude-plugin/plugin.json` and the matching `.claude-plugin/marketplace.json` entry on the same release version. Preserve both remote MCP configurations and the registered name.
@@ -113,8 +113,8 @@ To release, bump the three manifest versions and the CHANGELOG, merge, then `git
 
 ## Review materials and release
 
-The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.5.0 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
+The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.6.0 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
 
 Follow [CHANGELOG.md](CHANGELOG.md). A source push lets the directory detect and scan a new version; it does not mean the version is approved or published. Do not withdraw an existing review, change its tracked branch, create another registration or change automatic-publication settings as a workaround. Publishing source and a plugin package does not deploy the server or change OAuth scopes or credentials.
 
-License: `UNLICENSED`, retained from the existing manifest and [LICENSE](LICENSE). This update does not change the license or grant additional rights.
+License: [Apache-2.0](LICENSE) for this plugin's manifests, skill and packaging scripts; [NOTICE](NOTICE) reserves the Thegram name and logo, and the Thegram service and apps are provided under their own [terms](https://vault.thegram.one/legal/terms). Both files ship in every package.

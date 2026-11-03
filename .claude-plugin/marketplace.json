@@ -3,13 +3,13 @@
 	"owner": {
 		"name": "thegram-one"
 	},
-	"description": "Where your thoughts connect: plans, notes, ideas and knowledge in .gram files shared by people and AI.",
+	"description": "The AI knowledge base for enterprise AX: Claude reads and cites linked goals, decisions and sources in Thegram, and saves typed records only when you ask.",
 	"plugins": [
 		{
 			"name": "thegram-cloud",
 			"source": "./",
-			"version": "4.5.0",
-			"description": "Where your thoughts connect: write, organize and revisit .gram records with AI over https://vault.thegram.one/mcp, no Mac or desktop app required."
+			"version": "4.6.0",
+			"description": "Search, read and cite company knowledge in Thegram and save typed records with history when you ask, over https://vault.thegram.one/mcp. No Mac or desktop app required."
 		}
 	]
 }

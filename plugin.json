@@ -1,18 +1,21 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "thegram-cloud",
-  "version": "4.5.0",
-  "description": "One purpose, one structured .gram file: shared memory for people and AI, with source-grounded information, decisions, relationships and change history. Use authorized Thegram Cloud vaults or separately connected Google Drive destinations.",
+  "version": "4.6.0",
+  "description": "The AI knowledge base for enterprise AX: linked goals, decisions, requirements, evidence and sources that people and AI read as one record, answered with sources, every change kept as history. Use authorized Thegram Cloud vaults or separately connected Google Drive destinations.",
   "author": {
     "name": "Roy Kim",
     "url": "https://thegram.one"
   },
   "homepage": "https://thegram.one",
-  "repository": "https://github.com/clab-one/thegram-plugin",
-  "license": "UNLICENSED",
+  "repository": "https://github.com/thegram-one/thegram-plugin",
+  "license": "Apache-2.0",
   "keywords": [
-    "memory",
+    "knowledge-base",
     "thegram",
+    "enterprise",
+    "ai-transformation",
+    "memory",
     "mcp",
     "remote"
   ],
@@ -20,24 +23,24 @@
     "com.openai": {
       "interface": {
         "displayName": "Thegram",
-        "shortDescription": "One .gram for people and AI",
-        "longDescription": "Keep the memory of a plan, research topic, project or everyday work in one structured .gram file shared by people and AI. When you authorize saving, preserve useful information from conversations and apps available through your supported AI client's connectors, together with its sources, decisions, relationships and change history. Explore the same records through document, dashboard and graph views in compatible Thegram apps, with revision history instead of a separate history or duplicated content for each view. Cloud surfaces currently support Document and Dashboard; Graph is available in the desktop app. Views depend on the recorded structure and the app. The bundled English thegram-cloud skill retrieves relevant context and maintains outcomes within your approved purpose and destination; queries, analysis and drafts stay read-only unless saving is authorized. Use Thegram Cloud vaults or Google Drive separately connected at vault.thegram.one. The cloud plugin needs no running Mac and cannot access local-only Mac files. It does not itself fetch other apps. Shared-vault viewers cannot write.",
+        "shortDescription": "The AI knowledge base for AX",
+        "longDescription": "Thegram turns scattered documents and decisions into a knowledge base of linked goals, decisions, requirements, evidence and sources, kept as typed records in .gram files with every revision. People, Thegram AI and supported assistants read the same records and answer with the documents they rest on. This plugin connects your assistant to Thegram vaults and shared GramHub datasets such as Korean law, public bids, security advisories and developer docs: it searches by meaning, record type, status and date, gives exact counts and rankings, follows links between records and shows what changed and when. When you authorize saving, it writes decisions, tasks, risks, metrics and other typed records to the vault you choose, each as a new revision with its author and time; queries, analysis and drafts stay read-only unless saving is authorized. Use Thegram Cloud vaults or Google Drive separately connected at vault.thegram.one, sign in with your own Thegram account, and grant access per vault. The cloud plugin needs no running Mac and cannot access local-only Mac files. It does not itself fetch other apps, and connected-app access alone does not authorize saving. Shared-vault viewers cannot write.",
         "developerName": "C.Lab",
         "category": "Productivity",
         "capabilities": [
-          "Purpose-based memory shared by people and AI",
-          "Find source-grounded decisions, history and tasks",
-          "Keep structured .gram records and relationships together",
-          "One .gram for documents, dashboards and supported graph views"
+          "Search and cite linked goals, decisions, requirements and sources",
+          "Exact counts and rankings across a vault",
+          "Typed records with every change kept as history",
+          "GramHub data next to your own knowledge"
         ],
         "websiteURL": "https://thegram.one",
-        "supportURL": "https://github.com/clab-one/thegram-plugin/issues",
+        "supportURL": "https://github.com/thegram-one/thegram-plugin/issues",
         "privacyPolicyURL": "https://vault.thegram.one/legal/privacy",
         "termsOfServiceURL": "https://vault.thegram.one/legal/terms",
         "defaultPrompt": [
-          "What changed in my research notes this week, and what sources support it?",
-          "What did we decide about the launch date, and why?",
-          "Show how our trip plan decisions relate to their sources and follow-up tasks."
+          "What did we decide about the launch date, and what evidence supports it?",
+          "Which risks and blockers are open in our AX program, and who owns them?",
+          "What changed in our requirements this week?"
         ],
         "brandColor": "#0A0A0A",
         "brandColorDark": "#FFFFFF",
@@ -106,11 +109,11 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "4.5.0: Replaces the bundled thegram-cloud skill with one short file and no references. One method reads every vault and shared GramHub dataset: scope first, vault_search with a folder, tags copied from a hit, group_by for the kinds of record, order for newest or oldest, and open before quoting; it writes only what the person asks to save. Record shapes and write rules come from vault_guide and the tool schemas. Coding agents use the same plugin and endpoint with an API key bearer header. Preserves the published plugin identity, MCP configuration and skill namespace.",
+        "release_notes": "4.6.0: Repositions the listing around the Thegram AI knowledge base for enterprise AX and licenses the plugin under Apache-2.0 (LICENSE and NOTICE ship in the package). The bundled thegram-cloud skill now covers the 14-tool surface including vault_exact for exact counts and rankings, and teaches the 22 record types: pick the filter when reading and the type when writing by what the sentence means, with the neighbouring type named for each. Writes still happen only when the person asks to save. Preserves the published plugin identity, MCP configuration and skill namespace.",
         "translations": {
           "ko-KR": {
-            "subtitle": "목적별 .gram 하나, 사람과 AI의 기억",
-            "description": "계획, 조사, 프로젝트, 일상 작업의 기억을 사람과 AI가 함께 쓰는 구조화된 .gram 파일 하나에 담습니다. 저장을 승인하면 사용하는 AI 클라이언트의 커넥터로 접근이 허가된 앱 정보와 대화의 필요한 내용을 출처, 결정, 관계, 변화 이력과 함께 보존할 수 있습니다. 같은 기록을 지원되는 Thegram 앱의 문서·대시보드·그래프로 살펴보고 revision 이력을 확인하므로 뷰마다 내용을 다시 만들거나 별도 히스토리를 따로 관리할 필요를 줄입니다. 현재 클라우드는 문서·대시보드를, 데스크톱 앱은 그래프도 지원하며 표시는 기록 구조와 앱에 따라 다릅니다. 포함된 영어 thegram-cloud 스킬은 승인된 목적과 저장 위치 안에서 필요한 문맥을 조회하고 결과를 유지하도록 안내합니다. 조회·분석·초안은 저장 승인이 없으면 읽기 전용입니다. Thegram Cloud vault 또는 vault.thegram.one에서 별도로 연결한 Google Drive를 사용하며 클라우드 플러그인을 쓰기 위해 Mac이 켜져 있을 필요는 없습니다. 플러그인 자체는 다른 앱의 정보를 가져오지 않으며 Mac 로컬 전용 파일은 보이지 않습니다. 공유 vault의 보기 권한으로는 쓸 수 없습니다."
+            "subtitle": "AI가 근거로 쓰는 지식 베이스",
+            "description": "Thegram은 흩어진 문서와 결정을 목표, 결정, 요구사항, 근거, 출처가 연결된 지식 베이스로 바꿉니다. 지식은 .gram 파일의 유형이 있는 레코드로 모든 revision과 함께 보관되고, 사람과 Thegram AI와 지원되는 AI 어시스턴트가 같은 기록을 읽어 근거 문서와 함께 답합니다. 이 플러그인은 어시스턴트를 Thegram vault와 한국 법령, 공공입찰, 보안 위험 정보, 개발 문서 같은 GramHub 공유 데이터에 연결합니다. 의미, 레코드 유형, 상태, 날짜로 검색하고 정확한 개수와 순위를 구하며 레코드 사이의 연결과 무엇이 언제 바뀌었는지 보여 줍니다. 저장을 승인하면 결정, 할 일, 위험, 지표 같은 레코드를 선택한 vault에 작성자와 시각이 남는 새 revision으로 저장하고, 조회·분석·초안은 저장 승인이 없으면 읽기 전용입니다. Thegram Cloud vault 또는 vault.thegram.one에서 별도로 연결한 Google Drive를 사용하고, 본인의 Thegram 계정으로 로그인해 vault별로 접근을 허용합니다. 클라우드 플러그인을 쓰기 위해 Mac이 켜져 있을 필요는 없으며 Mac 로컬 전용 파일은 보이지 않습니다. 플러그인 자체는 다른 앱의 정보를 가져오지 않고, 연결된 앱에 접근할 수 있다는 사실만으로 저장이 승인되지는 않습니다. 공유 vault의 보기 권한으로는 쓸 수 없습니다."
           }
         }
       }
