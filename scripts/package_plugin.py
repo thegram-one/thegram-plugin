@@ -26,7 +26,7 @@ import zipfile
 PLUGIN_NAME = "thegram-cloud"
 SKILL_ROOT = "skills/thegram-cloud"
 PRIVATE_MANIFEST = ".codex-plugin/plugin.json"
-PUBLIC_FILES = ("plugin.json", "mcp.json", ".mcp.json")
+PUBLIC_FILES = ("plugin.json", "mcp.json", ".mcp.json", "LICENSE", "NOTICE")
 PUBLIC_TREES = ("skills", "assets", ".claude-plugin")
 CLAUDE_README = "release/claude-README.md"
 VERSION_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$")
@@ -423,7 +423,7 @@ def build_claude(root: Path, output: Path, expected_version: str | None = None) 
     portable = public_files(root)
     validate_public(portable, expected_version)
     files = {name: data for name, data in portable.items()
-             if name in (".mcp.json", ".claude-plugin/plugin.json") or name.startswith(("skills/", "assets/"))}
+             if name in (".mcp.json", ".claude-plugin/plugin.json", "LICENSE", "NOTICE") or name.startswith(("skills/", "assets/"))}
     files["README.md"] = read_local_file(root / CLAUDE_README)
     check_file_tree(files)
     validate_skill_files(files, ["skills"])

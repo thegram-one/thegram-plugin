@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased
+## 4.6.0 — 2026-11-04
 
-- Add `.agents/plugins/marketplace.json` so the repository is a Codex marketplace: `codex plugin marketplace add thegram-one/thegram-plugin`, then `codex plugin add thegram-cloud@thegram-cloud`. The plugin, skill, MCP server, OAuth configuration and ZIP packages are unchanged, so this needs no new version.
-- README: add the Codex install steps and how a Codex API key replaces the plugin's OAuth server.
+- License the plugin under Apache-2.0 (`LICENSE`) with a `NOTICE` that reserves the Thegram name and logo. Both files ship in the portable and Claude ZIPs, and `license` in `plugin.json` and `.claude-plugin/plugin.json` changes from `UNLICENSED` to `Apache-2.0`.
+- Rewrite the listing around the current thegram.one concept, the AI knowledge base for enterprise AX: new descriptions, keywords, capabilities, default prompts and Korean translation. Add `documentationUrl` (https://docs.thegram.one) and point the portable manifest at `thegram-one/thegram-plugin`.
+- Replace the bundled skill with the 4.6.0 release from the shared skill source. It covers the 14-tool surface including `vault_exact`, adds a table of the 22 record types (what each holds and which neighbouring type it is not) that drives the filter when reading and the type when writing, maps common questions to `type`, `status`, date and `vault_exact` calls, asks for `vault_guide` before the first write, and carries the coverage and validity cautions: candidates and groups never prove a count, and only a complete `vault_exact` execution does.
+- Add the Codex marketplace `.agents/plugins/marketplace.json` (`codex plugin marketplace add thegram-one/thegram-plugin`, then `codex plugin add thegram-cloud@thegram-cloud`) and the README steps for installing on Codex and for replacing OAuth with an API key.
 
 ## 4.5.0 — 2026-10-31
 

@@ -1,6 +1,6 @@
 # Thegram Cloud for Claude
 
-Thegram is shared, structured memory for people and AI assistants. This plugin pairs the Thegram remote MCP connector with one memory skill. Ask Claude to find an earlier decision, retrieve a project's current constraints, or save an explicitly authorized outcome with its sources. The skill turns a research request into an evidence-driven task plan and maintains one deeply explained document per subject. Each material conclusion is a typed claim with how it is known, version-pinned sources and supporting or contradicting evidence, and section replacements stay protected by the original revision and hash.
+Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI and Claude read as one record, with every change kept as history. This plugin pairs the Thegram remote MCP connector with one skill. Ask Claude to find an earlier decision, list a project's open risks, count records exactly, or save an explicitly authorized outcome as a typed record with its sources. The skill picks the record type, status and date a question implies, cites the records it relied on, and writes only what you ask it to save.
 
 ## Add and connect
 
@@ -18,7 +18,7 @@ Retrieval and drafts stay read-only. Writes require your authorization and must 
 
 This ZIP is for account upload on claude.ai and the desktop app. Plugins added to that account can sync to Cowork and Claude Code under Anthropic's supported account flow. Public directory submission is separate: Anthropic currently takes a GitHub repository and plugin folder through its developer portal, validates and scans each version, and reviews a new listing before publication. Local validation is not directory approval.
 
-License: `UNLICENSED`, retained from the published plugin manifest. This package does not change the existing license or grant additional rights.
+License: Apache-2.0 (see `LICENSE`). `NOTICE` reserves the Thegram name and logo; the Thegram service and apps are provided under their own terms.
 
 - Website: https://thegram.one
 - Privacy: https://vault.thegram.one/legal/privacy
