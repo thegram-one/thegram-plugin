@@ -109,7 +109,7 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "4.7.0: The bundled thegram-cloud skill is now 15 short rules and the 22 record types (3.4 KB, was 15.4 KB), written as commands for the five-tool surface: vault_ask (questions, with browse, changes, comments and guide as op), vault_read, vault_add (create, comment, restore, feedback), vault_change (edit, move, delete) and vault_exact. Reads start with vault_ask, filter only through quoted conditions the server checks, count only with a complete vault_exact and cite every claim; writes happen only on request, after the live guide, and are read back. Preserves the published plugin identity, MCP configuration and skill namespace.",
+        "release_notes": "4.7.0: The bundled thegram-cloud skill is a mandatory four-step procedure (4.8 KB, was 15.4 KB) for the five-tool surface: vault_ask, vault_read, vault_add, vault_change and vault_exact. It routes every question before any call: the person's own work to their vaults, laws, apartment data, bids, security advisories, developer docs and math papers to the matching GramHub dataset, and never mixes the two. Reads filter only through quoted conditions, cite every claim, count only with a complete vault_exact and say when a result is partial; writes happen only on request, after the live guide, and are read back. In Claude Code, every Thegram write asks for confirmation. Preserves the published plugin identity, MCP configuration and skill namespace.",
         "translations": {
           "ko-KR": {
             "subtitle": "AI가 근거로 쓰는 지식 베이스",

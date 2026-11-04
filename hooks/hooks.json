@@ -1,0 +1,27 @@
+{
+  "description": "Thegram gates: every write needs the person's confirmation, and every read answer carries the citation and completeness rules.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*thegram.*__(vault_add|vault_change|vault_create|vault_edit|vault_move|vault_delete|vault_restore|vault_comment|gram_create|gram_patch|gram_move|gram_delete|gram_restore|gram_comment)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"ask\",\"permissionDecisionReason\":\"Thegram write. Allow only if you asked for exactly this save or change.\"}}'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__.*thegram.*__(vault_ask|vault_search|vault_read|vault_exact)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Thegram rules: cite every claim as path#id; a law article counts only if the hit names that law and that article; counts and totals only from a complete vault_exact; if relevance is weak, omitted, files_pending > 0 or interpretation.exhaustive, say the result is partial; call next.tool with next.args exactly; never write unless the person asked.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
