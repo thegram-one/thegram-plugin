@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.7.0 — 2026-11-04
+
+- Replace the bundled skill with the 4.7.0 release from the shared skill source (6 KB, was 15.4 KB) for the five tools the server now lists: `vault_ask` (questions; `op` `hubs`, `browse`, `changes`, `comments`, `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. It states which surface it serves and defers to the server instructions on any other.
+- Recording is the point: the agent records what the person asks to save, offers to record decisions, tasks, commitments and outcomes they state, never saves silently, and when a write cannot land keeps the content in its answer and says where it was not saved. Record types fall back to the closest type instead of a refusal.
+- Reads decide the target first: the person's own work goes to `vault_ask` without scope; public or reference data goes through `vault_ask {op:"hubs", question}`, which ranks any number of hubs against the question (an unscoped answer also lists `scope.hub_candidates`). No hub is named in the skill. Hubs are never searched unscoped or mixed with own vaults, tags are copied from hits, `guide.gram`/`coverage.gram` explain a dataset, and a hit counts only when it matches every entity the question names.
+- Filters go only in quoted `plan.conditions`; `terms` and `options` are for a find only. Counts come only from a complete `vault_exact`; an unresolved one is retried once in the catalog's alias words. A complete result is exact only within its scope, unknown upstream coverage is reported, and exact snapshots are read within their ~15-minute life. A read that cannot meet a rule still answers and names what is partial.
+- Add a Claude Code hook (`hooks/hooks.json`) that follows every read answer with the citation and completeness rules. Other hosts rely on the skill and the server instructions.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged. Needs vaultd with the five-tool surface (thegram-one/thegram-vault#341) and the Gateway retrying `vault_add`/`vault_change` writes (thegram-one/thegram-mcp-gateway#5); rescan the MCP server on the plugin page.
+
 ## 4.6.0 — 2026-11-04
 
 - License the plugin under Apache-2.0 (`LICENSE`) with a `NOTICE` that reserves the Thegram name and logo. Both files ship in the portable and Claude ZIPs, and `license` in `plugin.json` and `.claude-plugin/plugin.json` changes from `UNLICENSED` to `Apache-2.0`.

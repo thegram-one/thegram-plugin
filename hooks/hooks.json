@@ -1,0 +1,16 @@
+{
+  "description": "Thegram: every read answer is followed by the citation and completeness rules.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__.*thegram.*__(vault_ask|vault_search|vault_read|vault_exact)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Thegram: cite every claim as path#id; a hit counts only if it matches every entity the question names; counts and totals only from a complete vault_exact; say the result is partial when relevance is weak, omitted, files_pending > 0 or interpretation.exhaustive; call next.tool with next.args as given.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
