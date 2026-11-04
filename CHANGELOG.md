@@ -2,9 +2,9 @@
 
 ## 4.7.0 — 2026-11-04
 
-- Replace the bundled skill with the 4.7.0 release from the shared skill source, written for the five tools the server now lists: `vault_ask` (questions; `op` `browse`, `changes`, `comments`, `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`.
-- Reads drop the scope step for the person's own vaults (an unscoped question no longer reaches shared hubs), pass filters as `plan.conditions` quoted from the question that the server checks against the vocabulary, and use the `records` an answer already carries instead of a second read. A `next` that names an unlisted tool is called as given.
-- Writes call `vault_ask {op:"guide"}` first, create with `vault_add {op:"create"}` and edit with `vault_change {op:"edit"}`; an unknown record type is now `E_UNKNOWN_TYPE` with the allowed list. Review cases and guides name the new calls.
+- Replace the bundled skill with the 4.7.0 release from the shared skill source: 15 rules and the 22 types in 3.4 KB (was 15.4 KB), stated as commands instead of guidance, for the five tools the server now lists: `vault_ask` (questions; `op` `browse`, `changes`, `comments`, `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`.
+- Reads always start with `vault_ask {question}` (no browse first; an unscoped question no longer reaches shared hubs), put filters only in `plan.conditions` quoted from the question, answer from the `records` the answer carries, call any `next` exactly as given, count only with a complete `vault_exact`, and cite `path#id`.
+- Writes happen only on an explicit request, after `vault_ask {op:"guide"}`, with a new `request_id`, resent unchanged while `queued`, then read back. Record shapes, status values and edit operations now come only from that live contract and the server's error details. Review cases and guides name the new calls.
 - Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged. Needs vaultd with the five-tool surface (thegram-one/thegram-vault#341) and the Gateway retrying `vault_add`/`vault_change` writes (thegram-one/thegram-mcp-gateway#5); rescan the MCP server on the plugin page.
 
 ## 4.6.0 — 2026-11-04
