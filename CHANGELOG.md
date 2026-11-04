@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.7.0 — 2026-11-04
+
+- Replace the bundled skill with the 4.7.0 release from the shared skill source, written for the five tools the server now lists: `vault_ask` (questions; `op` `browse`, `changes`, `comments`, `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`.
+- Reads drop the scope step for the person's own vaults (an unscoped question no longer reaches shared hubs), pass filters as `plan.conditions` quoted from the question that the server checks against the vocabulary, and use the `records` an answer already carries instead of a second read. A `next` that names an unlisted tool is called as given.
+- Writes call `vault_ask {op:"guide"}` first, create with `vault_add {op:"create"}` and edit with `vault_change {op:"edit"}`; an unknown record type is now `E_UNKNOWN_TYPE` with the allowed list. Review cases and guides name the new calls.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged. Needs vaultd with the five-tool surface (thegram-one/thegram-vault#341) and the Gateway retrying `vault_add`/`vault_change` writes (thegram-one/thegram-mcp-gateway#5); rescan the MCP server on the plugin page.
+
 ## 4.6.0 — 2026-11-04
 
 - License the plugin under Apache-2.0 (`LICENSE`) with a `NOTICE` that reserves the Thegram name and logo. Both files ship in the portable and Claude ZIPs, and `license` in `plugin.json` and `.claude-plugin/plugin.json` changes from `UNLICENSED` to `Apache-2.0`.

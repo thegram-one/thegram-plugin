@@ -2,7 +2,7 @@
 
 Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI, ChatGPT and Claude read as one record. Every answer can end with the documents it rests on, and every change is kept as history. This plugin pairs the Thegram remote MCP connector with one skill: ask Claude or another supported host to find an earlier decision, list the open risks of a project, count records exactly, or save an explicitly authorized outcome as a typed record with its sources.
 
-Version 4.6.0 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the 14-tool surface (`vault_guide`, `vault_browse`, `vault_search`, `vault_exact`, `vault_read`, `vault_changes`, `vault_comments`, `vault_create`, `vault_edit`, `vault_comment`, `vault_feedback`, `vault_move`, `vault_delete`, `vault_restore`). The skill is one file with no references. It reads every vault and shared GramHub dataset with one method (scope first, then the record type, status and date the question implies, open before quoting, `vault_exact` for counts and rankings), and writes only what the person asks to save. A table of the 22 record types tells Claude which type each fact belongs to, so reads filter on the right type and writes pass Core's template checks. Record shapes and write rules come from `vault_guide`, which the skill asks Claude to call before its first write.
+Version 4.7.0 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the five-tool surface: `vault_ask` (questions; `op` `browse`, `changes`, `comments` and `guide` for structure, history, comment threads and the write contract), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. The skill is one file with no references. It asks plainly for the person's own vaults without a scope step, passes filters as conditions quoted from the question that the server checks against the vocabulary, uses the records the answer already carries, `vault_exact` for counts and rankings, and writes only what the person asks to save. A table of the 22 record types tells Claude which type each fact belongs to. Record shapes and write rules come from `vault_ask {op:"guide"}`, which the skill asks Claude to call before its first write.
 
 ## Install on Claude
 
@@ -57,7 +57,7 @@ Local validation is not a portal security scan, host installation, OAuth test or
 
 ## Storage and access
 
-Cloud and separately connected Drive mounts are visible only when allowed by the current connection. Use the exact refs returned by `vault_browse`; reuse the established document instead of inventing a path, copying between mounts or redirecting a failed save. Local-only Mac folders are not visible to the cloud server.
+Cloud and separately connected Drive mounts are visible only when allowed by the current connection. Use the exact refs returned by `vault_ask`; reuse the established document instead of inventing a path, copying between mounts or redirecting a failed save. Local-only Mac folders are not visible to the cloud server.
 
 Each agent has its own access scope. Connecting Drive or owning another vault does not automatically expose it to that agent. Manage grants and disconnect agents in **Settings > Connected agents** at https://vault.thegram.one/settings/agents. A writable connection still requires user authorization before saving.
 
@@ -78,12 +78,12 @@ No local MCP command, lifecycle hook or automatic package installation is declar
 
 ## Shared workflow provenance
 
-The cloud skill is written in the shared skill source (`thegram-skill`, `skills/thegram-cloud/SKILL.md`) and enters this repository only through the validated public `thegram-cloud-4.6.0.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file.
+The cloud skill is written in the shared skill source (`thegram-skill`, `skills/thegram-cloud/SKILL.md`) and enters this repository only through the validated public `thegram-cloud-4.7.0.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file.
 
 To import a later validated public release without changing the cloud skill identity:
 
 ```sh
-python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.6.0.zip
+python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.7.0.zip
 ```
 
 The importer validates the archive before writing, replaces only its owned skill tree and updates the lock. Do not edit the generated skill independently. Keep `plugin.json`, `.claude-plugin/plugin.json` and the matching `.claude-plugin/marketplace.json` entry on the same release version. Preserve both remote MCP configurations and the registered name.
@@ -113,7 +113,7 @@ To release, bump the three manifest versions and the CHANGELOG, merge, then `git
 
 ## Review materials and release
 
-The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.6.0 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
+The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.7.0 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
 
 Follow [CHANGELOG.md](CHANGELOG.md). A source push lets the directory detect and scan a new version; it does not mean the version is approved or published. Do not withdraw an existing review, change its tracked branch, create another registration or change automatic-publication settings as a workaround. Publishing source and a plugin package does not deploy the server or change OAuth scopes or credentials.
 
