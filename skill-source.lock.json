@@ -1,11 +1,11 @@
 {
   "source": {
     "archive": "thegram-cloud-4.7.0.zip",
-    "sha256": "090665b2b3784ec43671db90a86b070d234514d8cfa880eab0b06945d7cf417b",
+    "sha256": "cc7076bcc4ddb8383f7ec6a03bf77622d53dc12c2ca1e2746d918413d8f72fab",
     "version": "4.7.0",
     "path": "skills/thegram-cloud"
   },
   "files": {
-    "SKILL.md": "4deb4b4bf3a0a99d9b7b4e547f40b0f68e4225631d5b516749ce05e28d5e6f9c"
+    "SKILL.md": "67197a94cf8fae99e7a10e2be6afe7dac5dc990e1269daff66e0809db0116337"
   }
 }

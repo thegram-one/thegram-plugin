@@ -1,6 +1,6 @@
 ---
 name: thegram-cloud
-description: Read before any Thegram tool call (vault_ask, vault_read, vault_add, vault_change, vault_exact). Use for any question about the person's notes, projects, decisions or tasks, any question about shared reference data in GramHub (laws, prices, public records, advisories, documentation, papers, other datasets), and whenever the person shares something to keep or asks to save or change something in Thegram.
+description: Load first whenever the person says record, save, note, remember, 기록, 저장 or 남겨, or names a Thegram vault or folder (the vaults listed in the Thegram server instructions, e.g. "Thegram-dev docs"); those go to Thegram, never to local files. Also for any question about the person's notes, projects, decisions or tasks, any question about shared reference data in GramHub, and before any Thegram tool call (vault_ask, vault_read, vault_add, vault_change, vault_exact).
 ---
 
 # Thegram: how to read and record
@@ -35,7 +35,7 @@ Recording is the point of Thegram: what the person gives you to keep must end up
 
 ## Step 4. Record
 
-12. Record what the person asks to save, and offer to record what they state as a decision, task, commitment or outcome of their work ("Save this to Thegram?") when they did not ask. Never save silently, and never let a stated item disappear: if you do not save it, say so.
+12. The destination is a Thegram vault, never a local file or repository document. A vault or folder the person names ("Thegram-dev docs") is one of the vaults in the server instructions; if none is named and it is unclear, ask which vault. Record what the person asks to save, and offer to record what they state as a decision, task, commitment or outcome of their work ("Save this to Thegram?") when they did not ask. Never save silently, and never let a stated item disappear: if you do not save it, say so.
 13. Before the first write in a conversation call `vault_ask {op:"guide", task:"memory"}` and follow it.
 14. Add to the existing document on the subject; `vault_add {op:"create"}` only when none exists. Hubs are read-only: never write there.
 15. One record per fact. `type` is one of: knowledge evidence context history assumption source decision requirement goal task project blocker run risk metric event person agent system service component artifact. When unsure, pick the closest; `knowledge` fits any plain fact.
