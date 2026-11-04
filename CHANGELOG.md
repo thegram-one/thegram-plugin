@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.1 — 2026-11-05
+
+- Remove the forced recording rules from the bundled skill: it no longer requires the agent to offer "Save this to Thegram?" for decisions, tasks, commitments and outcomes the person states, to avoid silent saves, or to report what it left unsaved. Whether to suggest or make a save the person did not ask for is the agent's judgment.
+- Keep the rest of recording unchanged: a request to record goes to the named Thegram vault, the agent writes what is known and names what is missing, follows the write procedure, and keeps the content in its answer when a write cannot land. Every read rule is unchanged.
+- Keep `thegram-cloud`, the remote MCP URL, OAuth configuration, assets and listing metadata unchanged. The server instructions drop the same rules; no tool, scope or credential changes.
+
 ## 4.7.0 — 2026-11-04
 
 - Replace the bundled skill with the 4.7.0 release from the shared skill source (6 KB, was 15.4 KB) for the five tools the server now lists: `vault_ask` (questions; `op` `hubs`, `browse`, `changes`, `comments`, `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. It states which surface it serves and defers to the server instructions on any other.
