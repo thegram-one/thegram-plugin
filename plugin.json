@@ -109,7 +109,7 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "4.7.0: The bundled thegram-cloud skill is a mandatory four-step procedure (4.8 KB, was 15.4 KB) for the five-tool surface: vault_ask, vault_read, vault_add, vault_change and vault_exact. It decides the target before any call: the person's own work goes to their vaults; public or reference data goes to the GramHub dataset picked from the browsed hub list, with one method for every hub and never mixed with own vaults. Reads filter only through quoted conditions, cite every claim, count only with a complete vault_exact and say when a result is partial; writes happen only on request, after the live guide, and are read back. In Claude Code, every Thegram write asks for confirmation. Preserves the published plugin identity, MCP configuration and skill namespace.",
+        "release_notes": "4.7.0: The bundled thegram-cloud skill (6 KB, was 15.4 KB) follows the five-tool surface: vault_ask, vault_read, vault_add, vault_change and vault_exact. Recording is the point: what the person gives Claude to keep is recorded or offered for recording, never silently dropped, and a write that cannot land keeps its content in the answer. Reads decide the target first: the person's own vaults, or the GramHub dataset ranked closest to the question among any number of hubs, never mixed. Reads filter through quoted conditions, cite every claim, count only with a complete vault_exact and say when a result is partial. Preserves the published plugin identity, MCP configuration and skill namespace.",
         "translations": {
           "ko-KR": {
             "subtitle": "AI가 근거로 쓰는 지식 베이스",
