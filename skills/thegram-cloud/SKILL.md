@@ -7,7 +7,7 @@ description: Load first whenever the person says record, save, note, remember, ê
 
 For the five-tool surface only: `vault_ask` (read; `op` `ask` default, `hubs`, `browse`, `changes`, `comments`, `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`), `vault_exact`. If the tools listed to you have other names, this skill does not apply: follow the server's instructions.
 
-Recording is the point of Thegram: what the person gives you to keep must end up recorded, never silently dropped. The rules below keep reads honest and records clean; when one cannot be met, do the rest and say exactly what is missing.
+The rules below keep reads honest and records clean; when one cannot be met, do the rest and say exactly what is missing.
 
 ## Step 1. Decide the target, every time, before any call
 
@@ -35,7 +35,7 @@ Recording is the point of Thegram: what the person gives you to keep must end up
 
 ## Step 4. Record
 
-12. The destination is a Thegram vault, never a local file or repository document. A vault or folder the person names ("Thegram-dev docs") is one of the vaults in the server instructions; if none is named and it is unclear, ask which vault. The content comes from the conversation and from anything you can read: for a repository, project or file, look for it by name where you can (working directory, its parent and siblings, home directory) and read its README, design notes and manifest first. Always write the record: what the person said is enough (the name, that it exists, today's date); add what sources state, cite them, and name what is still unknown. Asking for more never replaces writing what you have. Offer to record what the person states as a decision, task, commitment or outcome of their work ("Save this to Thegram?") when they did not ask. Never save silently, and never let a stated item disappear: if you do not save it, say so.
+12. The destination is a Thegram vault, never a local file or repository document. A vault or folder the person names ("Thegram-dev docs") is one of the vaults in the server instructions; if none is named and it is unclear, ask which vault. The content comes from the conversation and from anything you can read: for a repository, project or file, look for it by name where you can (working directory, its parent and siblings, home directory) and read its README, design notes and manifest first. When you record, what the person said is enough (the name, that it exists, today's date); add what sources state, cite them, and name what is still unknown. Asking for more never replaces writing what you have.
 13. Before the first write in a conversation call `vault_ask {op:"guide", task:"memory"}` and follow it.
 14. Add to the existing document on the subject; `vault_add {op:"create"}` only when none exists. Hubs are read-only: never write there.
 15. One record per fact. `type` is one of: knowledge evidence context history assumption source decision requirement goal task project blocker run risk metric event person agent system service component artifact. When unsure, pick the closest; `knowledge` fits any plain fact.
