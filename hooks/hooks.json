@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Thegram rules: cite every claim as path#id; a law article counts only if the hit names that law and that article; counts and totals only from a complete vault_exact; if relevance is weak, omitted, files_pending > 0 or interpretation.exhaustive, say the result is partial; call next.tool with next.args exactly; never write unless the person asked.\"}}'"
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Thegram rules: cite every claim as path#id; a hit counts only if it matches every entity the question names; counts and totals only from a complete vault_exact; if relevance is weak, omitted, files_pending > 0 or interpretation.exhaustive, say the result is partial; call next.tool with next.args exactly; never write unless the person asked.\"}}'"
           }
         ]
       }
