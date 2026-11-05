@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.3 — 2026-11-06
+
+- Remove what the directory policy hold `MCP_FORWARDS_CREDENTIAL_ENV` ("Uses a credential from the user's machine", on 4.6.0 through 4.7.2) pointed at: `tests/e2e/` (the archived live harnesses read OAuth and bearer tokens from the environment and a local refresh-token store, and carried a local Chrome path and test mailbox) and the `THEGRAM_API_KEY` bearer-header commands in the README. API-key sign-in is documented at https://docs.thegram.one/guides/local-setup/; the plugin itself still signs in with OAuth only.
+- Remove `hooks/hooks.json`. The directory will accept `command` hooks only from Verified organizations. The citation and completeness rules it echoed after each read stay in the bundled skill and the server instructions; only the per-read reminder is gone.
+- No change to the bundled skill, the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.7.2 — 2026-11-05
 
 - Fix the portable ZIP for the OpenAI plugin portal: it no longer contains `hooks/hooks.json`, and the packager now rejects any `hooks/` file in a public archive. The portal refuses plugins that contain hooks ("Plugins containing hooks cannot be submitted"), which blocked the 4.7.1 portable ZIP.

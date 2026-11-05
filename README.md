@@ -2,7 +2,7 @@
 
 Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI, ChatGPT and Claude read as one record. Every answer can end with the documents it rests on, and every change is kept as history. This plugin pairs the Thegram remote MCP connector with one skill: ask Claude or another supported host to find an earlier decision, list the open risks of a project, count records exactly, or save an explicitly authorized outcome as a typed record with its sources.
 
-Version 4.7.2 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the five-tool surface: `vault_ask` (questions; `op` `hubs`, `browse`, `changes`, `comments` and `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. The skill is one 6 KB file: reads decide the target first (own vaults, or the GramHub dataset `vault_ask {op:"hubs"}` ranks closest among any number of hubs), cite `path#id`, and count only with a complete `vault_exact`; recording follows the person's request and the agent's judgment. In Claude Code, `hooks/hooks.json` follows every read answer with the citation and completeness rules; the portable and Claude ZIPs do not carry it, because the OpenAI plugin portal refuses plugins that contain hooks.
+Version 4.7.3 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. It uses the five-tool surface: `vault_ask` (questions; `op` `hubs`, `browse`, `changes`, `comments` and `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. The skill is one 6 KB file: reads decide the target first (own vaults, or the GramHub dataset `vault_ask {op:"hubs"}` ranks closest among any number of hubs), cite `path#id`, and count only with a complete `vault_exact`; recording follows the person's request and the agent's judgment. The citation and completeness rules live in the skill and the server instructions; the plugin ships no hooks.
 
 ## Install on Claude
 
@@ -28,21 +28,7 @@ codex mcp login thegram
 
 The plugin brings the skill (`thegram-cloud:thegram-cloud`) and the remote `thegram` MCP server; `codex mcp login thegram` signs in with your Thegram account through OAuth in the browser. Installing the plugin alone does not authorize access to your data. In the Codex app, add the same marketplace from the Plugins directory. Update with `codex plugin marketplace upgrade thegram-cloud`.
 
-To use an API key instead of OAuth, see **Coding agents**.
-
-## Coding agents
-
-Coding agents use the same skill and the same endpoint; only the sign-in differs. In https://vault.thegram.one/ open **Settings → Agents → API keys**, create a named key for the vault it needs with only the permissions required, and copy the secret once into a secret environment variable `THEGRAM_API_KEY`. Then add the server with a bearer header:
-
-```sh
-claude mcp add --transport http thegram https://vault.thegram.one/mcp --header "Authorization: Bearer $THEGRAM_API_KEY"
-codex mcp add thegram --url https://vault.thegram.one/mcp --bearer-token-env-var THEGRAM_API_KEY
-opencode mcp add thegram --url https://vault.thegram.one/mcp --header Authorization="Bearer $THEGRAM_API_KEY"
-```
-
-The key carries its own access scope, so a vault it was not granted is denied with `AGENT_SCOPE_DENIED`. Never paste the key into a conversation, a repository or a package. `--header` takes the value as a command argument, so run those two commands yourself in a shell whose history and logs are private; Codex reads the key from the environment and needs no argument. The bundled skill is the same file for every host.
-
-With Codex, install the plugin as above for the skill, then run the `codex mcp add` line. A user-level server named `thegram` replaces the plugin's own server of that name, so there is one `thegram` server that sends the bearer key and no OAuth sign-in. Codex does not send an `Authorization` header declared in a plugin's `mcp.json`, so the key is never bundled in the package.
+To use an API key instead of OAuth, or to connect Claude Code, Codex, OpenCode or OMP as a coding agent, follow https://docs.thegram.one/guides/local-setup/ and create a scoped key in **Settings → Agents → API keys** at https://vault.thegram.one/. The plugin never bundles or reads a credential; the bundled skill is the same file for every host.
 
 ## Public directory submission
 
@@ -99,7 +85,7 @@ claude plugin validate .claude-plugin/plugin.json --profile directory --strict -
 
 Complete all changes and builds before one final integrated E2E. Do not run individual unit, per-feature or partial scenarios during release work. The final run must cover the matching runtime, release packaging, source-pin integrity and actual Claude manifest validation, and retain repeatable reports. A failed run requires a fix, completed builds and a rerun of the complete final E2E.
 
-The archived live harnesses under `tests/e2e/` are not evidence of a new host installation or permission grant. Do not run them against a production account without explicit authorization. Keep test accounts, credentials, private reviewer details and local machine state out of public files.
+Keep test accounts, credentials, private reviewer details and local machine state out of public files.
 
 ## Releases and latest downloads
 
@@ -113,7 +99,7 @@ To release, bump the three manifest versions and the CHANGELOG, merge, then `git
 
 ## Review materials and release
 
-The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.7.2 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
+The English [reviewer guide](review/reviewer-guide.md) defines five positive and three negative memory scenarios. The [demo script](review/demo-script.md) distinguishes the recordings from future bundled-package runs. Published recordings at https://thegram.one/review/openai/ used a dev-mode custom MCP connection; they do not prove that the 4.7.3 bundled skill ran in Claude. Reviewer credentials belong only in the provider's private review channel, never in this repository or recordings.
 
 Follow [CHANGELOG.md](CHANGELOG.md). A source push lets the directory detect and scan a new version; it does not mean the version is approved or published. Do not withdraw an existing review, change its tracked branch, create another registration or change automatic-publication settings as a workaround. Publishing source and a plugin package does not deploy the server or change OAuth scopes or credentials.
 
