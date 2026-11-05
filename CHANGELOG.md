@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.2 — 2026-11-05
+
+- Fix the portable ZIP for the OpenAI plugin portal: it no longer contains `hooks/hooks.json`, and the packager now rejects any `hooks/` file in a public archive. The portal refuses plugins that contain hooks ("Plugins containing hooks cannot be submitted"), which blocked the 4.7.1 portable ZIP.
+- Claude Code installs from this repository still load `hooks/hooks.json` (the citation and completeness reminder after each Thegram read). The Claude ZIP never carried hooks.
+- No change to the bundled skill, the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.7.1 — 2026-11-05
 
 - Remove the forced recording rules from the bundled skill: it no longer requires the agent to offer "Save this to Thegram?" for decisions, tasks, commitments and outcomes the person states, to avoid silent saves, or to report what it left unsaved. Whether to suggest or make a save the person did not ask for is the agent's judgment.

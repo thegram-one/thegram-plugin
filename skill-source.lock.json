@@ -1,8 +1,8 @@
 {
   "source": {
-    "archive": "thegram-cloud-4.7.1.zip",
-    "sha256": "cc2739b5f06b6cccfbfd336804448be332a4798d5cbddbfd44c73b19fd92644e",
-    "version": "4.7.1",
+    "archive": "thegram-cloud-4.7.2.zip",
+    "sha256": "0cf8c7c9a3cbc4e0807cdf701a0b8a49887550829cd75dd015b9ef75f8cbcf4b",
+    "version": "4.7.2",
     "path": "skills/thegram-cloud"
   },
   "files": {
