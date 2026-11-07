@@ -1,10 +1,7 @@
 .DS_Store
 .env
 *.token
-# Live E2E reports name real accounts, vaults and Drive files; they stay on the machine that ran them.
-evidence/
-__pycache__/
-dist/
-# Private downloaded/overlaid plugin archives may contain app bindings or tokens.
 *.zip
+# Local machine state that must never be committed to the plugin folder.
+evidence/
 .orca/
