@@ -12,8 +12,8 @@ jobs:
   package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
       - name: Check shell syntax
@@ -25,7 +25,7 @@ jobs:
           version=$(python3 -c 'import json; print(json.load(open("plugin.json"))["version"])')
           python3 scripts/package_plugin.py build --output "$RUNNER_TEMP/thegram-cloud-$version.zip"
           python3 scripts/package_plugin.py validate "$RUNNER_TEMP/thegram-cloud-$version.zip" --expected-version "$version"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: thegram-cloud-package
           path: ${{ runner.temp }}/thegram-cloud-*.zip
