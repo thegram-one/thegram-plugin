@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## 4.7.5 — 2026-11-09
 
-- Skill: a move, delete or restore takes no `request_id` and refuses one; only a create and an edit carry it. The skill said every write has one, which a delete refused. After a lost reply the skill now reads the result before repeating a move or delete. The Codex and API plugins take this skill from the released ZIP with `scripts/sync_skill.py`, so they follow the next release; versions of the three plugins move together.
+- Skill: a move, delete or restore takes no `request_id` and refuses one; only a create and an edit carry it. The skill said every write has one, which a delete refused. After a lost reply the skill now reads the result before repeating a move or delete. The skill is byte for byte the one in `thegram-plugin-codex` and `thegram-plugin-api` (shared-skill release `thegram-cloud-4.7.5.zip`).
+- The releases of this repository carry `thegram-claude.zip` (this plugin's files), `thegram-cloud.zip` (the portable package built in `thegram-plugin-codex`) and `SHA256SUMS`, so `thegram.one/download/latest/…` keeps following the latest release here. Versions of the three plugins move together.
 
 ## 4.7.4 — 2026-11-07
 
