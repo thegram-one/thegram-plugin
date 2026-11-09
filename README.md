@@ -2,7 +2,7 @@
 
 Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI and Claude read as one record, with every change kept as history. This plugin pairs the Thegram remote MCP connector with one skill. Ask Claude to find an earlier decision, list a project's open risks, count records exactly, or save an explicitly authorized outcome as a typed record with its sources. The skill picks the record type, status and date a question implies, cites the records it relied on, and writes only what you ask it to save.
 
-Version 4.7.4 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key and `https://vault.thegram.one/mcp`. It uses the five-tool surface: `vault_ask` (questions; `op` `hubs`, `browse`, `changes`, `comments` and `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`.
+Version 4.7.5 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key and `https://vault.thegram.one/mcp`. It uses the five-tool surface: `vault_ask` (questions; `op` `hubs`, `browse`, `changes`, `comments` and `guide`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`, `feedback`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`.
 
 ## Add and connect
 

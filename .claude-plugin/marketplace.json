@@ -8,7 +8,7 @@
 		{
 			"name": "thegram-cloud",
 			"source": "./",
-			"version": "4.7.4",
+			"version": "4.7.5",
 			"description": "Search, read and cite company knowledge in Thegram and save typed records with history when you ask, over https://vault.thegram.one/mcp. No Mac or desktop app required."
 		}
 	]
