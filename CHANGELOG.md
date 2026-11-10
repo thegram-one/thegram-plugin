@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.1 — 2026-11-10
+
+- Skill: two rules changed, together with the server's instructions (the same SHA-256 on both sides). A count that comes back `unresolved` lists the words it did not read in `unread`: the skill asks again without them only when they add no condition, and otherwise says that condition cannot be counted. For a shared hub the skill gives the key words as `terms` in the language the hub is written in. It is byte for byte the one in `thegram-plugin-codex` and `thegram-plugin-api` (shared-skill release `thegram-cloud-4.8.1.zip`).
+- Needs the server release of 2026-11-10 (thegram-one/thegram-vault #419, #420), which is deployed. Checked on it with whole requests and real tool results: counts in the person's own vaults, small model 9 of 9 (2 of 4 before); two questions about Korean statutes asked in English, small model 6 of 6 (0 of 2 before). A count that names a hub's records by a word the server does not read still stops the small model in about two runs of three, with no number given. No Claude host has run it.
+
 ## 4.8.0 — 2026-11-10
 
 - Skill: rewritten as one page of 3.8 KB; it was eighteen rules in 6.5 KB. Its rules are the text the Thegram server sends as its instructions, byte for byte (`thegram-skill` and `thegram-vault` pin the same SHA-256), so Claude reads one contract whether it is given the skill, the instructions or both. The rules route a request to one tool, first match wins: remember with `vault_note` only when asked, in any language; a count with `vault_exact`; public data through `vault_ask {op:"hubs"}`; what can be read or what changed with `vault_ask`; a document with `vault_change` and `vault_add`; and anything else that may depend on what the person said with `vault_recall`, before asking the person for the missing detail. The skill no longer lists the record types, tells the agent to find a document before a note, or sends it to the guide. It is byte for byte the one in `thegram-plugin-codex` and `thegram-plugin-api` (shared-skill release `thegram-cloud-4.8.0.zip`).
