@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.2 — 2026-11-10
+
+- Skill: four sentences of the rules changed, together with the server's instructions (the same SHA-256 on both sides), so that the rules ask a tool only for what its job needs and speak only of Thegram's tools; a host's connector check had reported the earlier wording as asking for information beyond the stated operation. `vault_recall` is called for a question about what the person said, decided or prefers, and before the person is asked for a detail that a request leaves out, with the few words that name it, no longer for anything Claude is about to do with the request as written. `vault_note` takes what the person asked to save, in their words. It is byte for byte the shared source.
+- Needs the server release of 2026-11-10 (thegram-one/thegram-vault #421), which is deployed. Checked with one step per request: default model 72 of 72; small model 54 of 54 with the skill and 212 of 216 with the instructions alone (108 of 108 before). The host's own check was not rerun.
+
 ## 4.8.1 — 2026-11-10
 
 - Skill: two rules changed, together with the server's instructions (the same SHA-256 on both sides). A count that comes back `unresolved` lists the words it did not read in `unread`: the skill asks again without them only when they add no condition, and otherwise says that condition cannot be counted. For a shared hub the skill gives the key words as `terms` in the language the hub is written in. It is byte for byte the one in `thegram-plugin-codex` and `thegram-plugin-api` (shared-skill release `thegram-cloud-4.8.1.zip`).
