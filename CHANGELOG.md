@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.9.0 — 2026-11-11
+
+- Skill: the rules were rebuilt with the server's instructions (the same SHA-256 on both sides, `9a40e352…c4be80a`) for the server's new read core. Counts, totals, breakdowns and full lists of the person's own documents go to `vault_ask {scope, plan}` with the conditions in the plan, and what could not be decided (`completeness.unknown`, `untyped`) is reported beside the number; `vault_exact` counts shared hubs only. Any other question about the documents is a `vault_ask` find scoped to the vault meant (without a scope every vault answers apart), with an incident or decision id held in `plan.about`. An answer takes a number only from the record it cites. Recall keeps the 4.8.2 wording. It is byte for byte the shared source.
+- Needs the server release of 2026-11-11 (thegram-one/thegram-vault #431, #433; thegram-one/thegram-format #27, #28), which is deployed. Checked with one step per request (26 scenarios): default model 78 of 78 with and without the skill; small model 78 of 78 with the skill and 75 of 78 without (it gave the right number but did not name the vault). Whole requests on a local server: 20 of 20. No Claude host has run it.
+
 ## 4.8.2 — 2026-11-10
 
 - Skill: four sentences of the rules changed, together with the server's instructions (the same SHA-256 on both sides), so that the rules ask a tool only for what its job needs and speak only of Thegram's tools; a host's connector check had reported the earlier wording as asking for information beyond the stated operation. `vault_recall` is called for a question about what the person said, decided or prefers, and before the person is asked for a detail that a request leaves out, with the few words that name it, no longer for anything Claude is about to do with the request as written. `vault_note` takes what the person asked to save, in their words. It is byte for byte the shared source.
