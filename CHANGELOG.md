@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.12.0 — 2026-11-12
+
+- Align the shared skill with natural-language Core plans and source-backed Context Packs; report unresolved clauses, unknown/untyped data and incomplete coverage.
+- Record authorized AI-authored Decision/Risk knowledge with provenance, without blanket human confirmation or treating it as human approval or execution permission.
+- Require an advertised Inbox proposal capability and the person's registration for Task/Event creation; the current cloud tools expose neither, so report the limitation instead of using generic document writes. This release does not implement the Inbox UI/API.
+- Keep plugin identity, seven tools, MCP endpoint, OAuth settings and assets unchanged. Publish both Claude and portable ZIPs in this release so the official latest-download aliases advance together.
+
 ## 4.11.1 — 2026-11-11
 
 - Skill: one sentence added to Write (rules SHA-256 `2b92ec97…0e9de9e1e29`): `source` holds the id of a `source` record in the same document, never a name or URL; when the document has none for that origin, Claude adds one in the same write, and a URL stays in `ref`. A field test that put `"github-repository"` in `source` was refused with `E_MISSING_SOURCE`. It is byte for byte the shared source.
