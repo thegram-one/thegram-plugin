@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.0 — 2026-11-17
+
+- The seven tools became four: `vault_query` (read-only structured queries: find, list, count, sum, avg, min, max, group, keys, state), `vault_read` (read by ref, `@mounts` lists the vaults), `vault_add` (ops `doc`, `records`, `note`) and `vault_change` (ops `edit`, `move`, `delete`). `vault_recall`, `vault_note`, `vault_ask` and `vault_exact` are gone; shared hubs are read-only vaults named like any vault and listed by `@mounts`. A major version because the tool surface changed.
+- Skill: rules rewritten with the server's instructions (the same SHA-256 on both sides, `dc1fccce…172b28a`). Conditions go in `where` (no natural language), the answer's `conditions` and `undecided` are read before a 0 is reported, `vault_change` edits need no read first, and an answer with `queued: true` is repeated with the same `request_id`. The sentence that lets a host use the listed tools as their descriptions say stays, so 4.13.x skills keep working against the new server.
+- Keep plugin identity, MCP endpoint, OAuth settings and assets unchanged.
+- Needs the thegram-vault release of 2026-11-17 (four tools: vault_query, vault_read, vault_add, vault_change).
+
 ## 4.13.0 — 2026-11-12
 
 - Skill: the rules were rewritten together with the server's instructions (the same SHA-256 on both sides, `5c44663c…c1f7aa`) and shortened from about 8,000 to about 3,400 characters, so a host that keeps the first 4,000 characters (OMP) no longer drops the Recall, queued-write and instruction_like rules.
