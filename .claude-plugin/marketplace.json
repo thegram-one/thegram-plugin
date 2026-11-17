@@ -3,13 +3,13 @@
 	"owner": {
 		"name": "thegram-one"
 	},
-	"description": "The AI knowledge base for enterprise AX: Claude reads and cites linked goals, decisions and sources in Thegram, and saves typed records only when you ask.",
+	"description": "The AI knowledge base for enterprise AX: Claude queries, reads and cites linked goals, decisions and sources in Thegram, and saves typed records only when you ask.",
 	"plugins": [
 		{
 			"name": "thegram-cloud",
 			"source": "./",
-			"version": "4.13.0",
-			"description": "Search, read and cite company knowledge in Thegram and save typed records with history when you ask, over https://vault.thegram.one/mcp. No Mac or desktop app required."
+			"version": "5.0.0",
+			"description": "Query, read and cite company knowledge in Thegram through four tools and save typed records with history when you ask, over https://vault.thegram.one/mcp. No Mac or desktop app required."
 		}
 	]
 }

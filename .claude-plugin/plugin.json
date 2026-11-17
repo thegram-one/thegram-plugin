@@ -1,8 +1,8 @@
 {
   "name": "thegram-cloud",
   "displayName": "Thegram",
-  "version": "4.13.0",
-  "description": "Give Claude your company's knowledge base. Search, read and cite linked goals, decisions, requirements, evidence and sources in Thegram vaults and GramHub data, with every change kept as history. Claude saves typed records only when you ask.",
+  "version": "5.0.0",
+  "description": "Give Claude your company's knowledge base. Query, read and cite linked goals, decisions, requirements, evidence and sources in Thegram vaults and shared GramHub vaults, with every change kept as history. Claude saves typed records only when you ask.",
   "author": {
     "name": "Roy Kim"
   },
